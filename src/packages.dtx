@@ -23,12 +23,6 @@
 % Load |ifpdf| in order to determine if we should automatically switch
 % into web mode, and load the appropriate |PGF| driver.
 %    \begin{macrocode}
-\RequirePackage{ifpdf}
-\ifpdf
-\else
-  \def\pgfsysdriver{pgfsys-ximera.def}
-  \webtrue
-\fi
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
 \usepgfplotslibrary{groupplots}
@@ -59,9 +53,6 @@
 %<*classXimera>
 \RequirePackage{gettitlestring}
 \RequirePackage{nameref}
-\ifpdf
-  \RequirePackage{epstopdf}
-\fi
 %</classXimera>
 %    \end{macrocode}
 % On the web we are using Bakoma fonts, so we want to encode correctly.

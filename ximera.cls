@@ -146,12 +146,6 @@
 \RequirePackage{url}
 \RequirePackage[table]{xcolor}
 \RequirePackage{fancyvrb}
-\RequirePackage{ifpdf}
-\ifpdf
-\else
-  \def\pgfsysdriver{pgfsys-ximera.def}
-  \webtrue
-\fi
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
 \usepgfplotslibrary{groupplots}
@@ -170,9 +164,6 @@
 \RequirePackage{comment}
 \RequirePackage{gettitlestring}
 \RequirePackage{nameref}
-\ifpdf
-  \RequirePackage{epstopdf}
-\fi
 \ifweb
   \usepackage[OT1]{fontenc}
 \fi
