@@ -2,13 +2,13 @@
 % \DescribeMacro{\graph}{An embedded graph (in math mode).}
 %    \begin{macrocode}
 %<*classXimera>
+\ifweb
+\newcommand{\graph}[2][]{\special{ximera:rule graph #2}% FIXME: handle keyvalue arguments
+  \rule[-0.75em]{0.8\textwidth}{0.8\textwidth}}
+\else
 \newcommand{\graph}[2][]{\text{Graph of $#2$}}
+\fi
 %</classXimera>
 %    \end{macrocode}
 
-%    \begin{macrocode}
-%<*htXimera>
-\renewcommand{\graph}[2][]{\HCode{<div class="graph" data-options="#1">}#2\HCode{</div>}}
-%</htXimera>
-%    \end{macrocode}
 

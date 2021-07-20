@@ -93,15 +93,14 @@
   \renewcommand{\varrho}{\string\rho}
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
-  %[#2]
-  \rule[-0.5em]{\widthof{#2}}{2.5em}
+  \special{ximera:rule answer #2}
+  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em}
   \endgroup
 }
 \else
 \newcommand{\answer}[2][]{%
 	\ifmmode%
 		\setkeys{answer}{#1}%
-		\recordvariable{\ans@id}
 		\ifthenelse{\boolean{\ans@given}}
 			{% Start then statement
 			\ifhandout 

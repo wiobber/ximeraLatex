@@ -5,6 +5,15 @@
 \newboolean{given} %% required for freeResponse
 \setboolean{given}{true} %% could be replaced by a key=value pair later if needed
 
+\ifweb
+\newenvironment{freeResponse}[1][false]%
+{\special{ximera:rule free-response}
+
+  \noindent\rule{\hsize}{1in}
+
+}%
+{}%
+\else
 \ifhandout
 	\newenvironment{freeResponse}[1][false]%
 		{%
@@ -46,15 +55,6 @@
 			\end{trivlist}
 		}
 \fi
-
+\fi
 %</classXimera>
-%    \end{macrocode}
-
-%    \begin{macrocode}
-%<*htXimera>
-
-\renewenvironment{freeResponse}{\refstepcounter{problem}}{}%
-\ConfigureEnv{freeResponse}{\stepcounter{identification}\ifvmode \IgnorePar\fi \EndP\HCode{<div class="free-response" id="problem\arabic{identification}">}}{\HCode{</div>}\IgnoreIndent}{}{}%
-
-%</htXimera>
 %    \end{macrocode}

@@ -37,7 +37,7 @@ Some text about the class: probably the same as the abstract.
 \endpreamble
 \postamble
 
-Copyright (C) 2018-2020 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
+Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
 
 This work may be distributed and/or modified under the conditions of
 the LaTeX Project Public License (LPPL), either version 1.3c of this
@@ -72,6 +72,7 @@ Running "make install" installs the files in the local TeX tree.
     \from{src/options.dtx}{classXimera}
     \from{src/packages.dtx}{classXimera}
     \from{src/hyperref.dtx}{classXimera}
+    \from{src/graphics.dtx}{classXimera}    
     \from{src/paragraphs.dtx}{classXimera}
     \from{src/suppress.dtx}{classXimera}
     \from{src/makeCounter.dtx}{classXimera}
@@ -111,7 +112,8 @@ Running "make install" installs the files in the local TeX tree.
     \from{src/interactives/sagemath.dtx}{classXimera}        
     \from{src/jax.dtx}{classXimera}
     \from{src/ungraded.dtx}{classXimera}
-    \from{src/sectioning.dtx}{classXimera}    
+    \from{src/sectioning.dtx}{classXimera}
+    \from{src/a11y.dtx}{classXimera}
   }
 }
 \generate{
@@ -157,8 +159,8 @@ Running "make install" installs the files in the local TeX tree.
 %<classXimera|classXourse>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<classXimera>\ProvidesClass{ximera}
 %<classXourse>\ProvidesClass{xourse}
-%<classXimera|classXourse> [2020/01/15 v2.00
-%<classXimera> Simultaneously write print and online interactive materials]
+%<classXimera|classXourse> [2021/03/15 v2.00
+%<classXimera> Simultaneously target PDF and the web]
 %<classXourse> Combining Ximera activities into Xourses]
 %<*driver>
 \documentclass{ltxdoc}

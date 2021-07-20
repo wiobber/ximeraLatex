@@ -2,7 +2,7 @@
 %<*classXimera>
 %    \end{macrocode}
 % \subsection{Loading packages}
-% Since we want |\cancel| to work, we load it here to avoid polluting the |.jax| output.
+% Since we want |\cancel| to work, we load it here.
 %    \begin{macrocode}
 \RequirePackage[makeroom]{cancel}
 %    \end{macrocode}
@@ -13,11 +13,11 @@
 %    \begin{macrocode}
 \RequirePackage{everyhook}
 \RequirePackage{enumitem}
-\RequirePackage{titlesec} 
+\RequirePackage[pagestyles]{titlesec} 
 \RequirePackage{titletoc} 
 \RequirePackage{titling}
+\RequirePackage{xcolor}
 \RequirePackage{url}
-\RequirePackage[table]{xcolor}
 \RequirePackage{fancyvrb}
 %    \end{macrocode}
 % Load |ifpdf| in order to determine if we should automatically switch

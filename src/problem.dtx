@@ -16,6 +16,10 @@
 %    \end{macrocode}
 % \end{macro}
 %    \begin{macrocode}
+\ifweb
+\newcommand{\hang}{}% no decoration on the web
+\newcommand{\hung}{}
+\else
 \newcommand{\hang}{% top theorem decoration
   \begingroup%
   \setlength{\unitlength}{.005\linewidth}% \linewidth/200
@@ -46,6 +50,7 @@
     \end{picture}%
   \endgroup%
 }%
+\fi
 %    \end{macrocode}
 %
 % Configure environment configuration commands
@@ -148,6 +153,8 @@
 \problemEnvironmentEnd
 }
 
+\ximerizedEnvironment{problem}
+
 \newenvironment{exercise}[1][2in]%
 {%Env start code
 \problemEnvironmentStart{#1}{Exercise}
@@ -155,6 +162,8 @@
 {%Env end code
 \problemEnvironmentEnd
 }
+
+\ximerizedEnvironment{exercise}
 
 \newenvironment{exploration}[1][2in]%
 {%Env start code
@@ -164,6 +173,8 @@
 \problemEnvironmentEnd
 }
 
+\ximerizedEnvironment{exploration}
+
 \newenvironment{question}[1][2in]%
 {%Env start code
 \problemEnvironmentStart{#1}{Question}
@@ -171,6 +182,8 @@
 {%Env end code
 \problemEnvironmentEnd
 }
+
+\ximerizedEnvironment{question}
 %</classXimera>
 %    \end{macrocode}
 

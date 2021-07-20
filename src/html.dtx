@@ -1,20 +1,28 @@
 % \subsubsection{Semantic HTML}
 % \DescribeMacro{\textbf}{Using \verb|\textbf| emits a \verb|<strong>| tag.}
 %    \begin{macrocode}
-%<*cfgXimera>
-\Configure{textbf}{\ifvmode\ShowPar\fi\HCode{<strong>}}{\HCode{</strong>}}
-%</cfgXimera>
+%<*classXimera>
+\ifweb
+\pretocmd{\textbf}{\special{html <strong>}}{}{}
+\apptocmd{\textbf}{\special{html </strong>}}{}{}
+\fi
+%</classXimera>
 %    \end{macrocode}
 % \DescribeMacro{\textit}{Using \verb|\textit| or similar emits an \verb|<em>| tag.}
 %    \begin{macrocode}
-%<*cfgXimera>
-\Configure{textit}{\ifvmode\ShowPar\fi\HCode{<em>}}{\HCode{</em>}}
-\Configure{emph}{\ifvmode\ShowPar\fi\HCode{<em>}}{\HCode{</em>}}
-%</cfgXimera>
+%<*classXimera>
+\ifweb
+\pretocmd{\textit}{\special{html <em>}}{}{}
+\apptocmd{\textit}{\special{html </em>}}{}{}
+\fi
+%</classXimera>
 %    \end{macrocode}
 % \DescribeMacro{\texttt}{Using \verb|\texttt| emits a \verb|<code>| tag.}
 %    \begin{macrocode}
-%<*cfgXimera>
-\Configure{texttt}{\ifvmode\ShowPar\fi\HCode{<code>}}{\HCode{</code>}}
-%</cfgXimera>
+%<*classXimera>
+\ifweb
+\pretocmd{\texttt}{\special{html <code>}}{}{}
+\apptocmd{\texttt}{\special{html </code>}}{}{}
+\fi
+%</classXimera>
 %    \end{macrocode}

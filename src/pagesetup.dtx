@@ -13,45 +13,18 @@
 \evensidemargin 62pt
 \textwidth 345pt
 \headheight 14pt
-\ifweb\paperheight 100in\fi
+\ifweb\paperheight 100in\PassOptionsToPackage{margin=1in}{geometry}\fi
 \RequirePackage{geometry}
 %</classXimera>
 %    \end{macrocode}
-% On the HTML side, there is more complicated page setup to perform.
+% For the web, there is more complicated page setup to perform.  If the |\snapshot| primitive is available, snapshot the state of the \TeX\ at the start of the document.
 %    \begin{macrocode}
-%<*cfgXimera>
-\Preamble{xhtml}
-
-% We don't want to translate font suggestions with ugly wrappers like
-% <span class="cmti-10"> for italic text
-\NoFonts
-
-% Don't output xml version tag
-\Configure{VERSION}{}
- 
-% Output HTML5 doctype instead of the default for HTML4
-\Configure{DOCTYPE}{\HCode{<!doctype html>\Hnewline}}
- 
-% Custom page opening
-\Configure{HTML}{\HCode{<html lang="en">\Hnewline}}{\HCode{\Hnewline</html>}}
-
-% Reset <head>, aka delete all default boilerplate; alternatively set up new content
-\Configure{@HEAD}{\HCode{<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/\string~gurari/TeX4ht/)" />\Hnewline}}
-\Configure{@HEAD}{\HCode{<meta name="ximera" content="version 0.0.1" />\Hnewline}}
-\Configure{@HEAD}{\HCode{<link href="https://ximera.osu.edu/public/stylesheets/standalone.css" rel="stylesheet" media="screen"/>\Hnewline}}
-\Configure{@HEAD}{\HCode{<script type="text/javascript" async src="https://ximera.osu.edu/public/javascripts/standalone.min.js"></script>\Hnewline}}
-%</cfgXimera>
-%    \end{macrocode}
-% Disable certain ligatures in HTML.
-%    \begin{macrocode}
-%<*htXimera>
-\usepackage{microtype}
-\DisableLigatures[f]{encoding=*}
-%</htXimera>
-%    \end{macrocode}
-% I am not sure what this does.
-%    \begin{macrocode}
-%<*htXimera>
-\RenewEnviron{html}{\HCode{\BODY}}
-%</htXimera>
+%<*classXimera>
+\ifdefined\snapshot\AtBeginDocument{%
+  \snapshot%
+  \hsize=\directjs{tex.print(tex.hsize)}pt%
+  \setlength{\textwidth}{\directjs{tex.print(tex.hsize)}pt}%}
+  \setlength{\linewidth}{\directjs{tex.print(tex.hsize)}pt}%}  
+}\fi
+%</classXimera>
 %    \end{macrocode}

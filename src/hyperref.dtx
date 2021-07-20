@@ -2,7 +2,7 @@
 %    \begin{macrocode}
 %<*classXimera>
 % Don't use hyperref when using Tex4ht
-\ifdefined\HCode
+\ifweb
 \RequirePackage{hyperref}
 \else
 \RequirePackage[pdfpagelabels,colorlinks=true,allcolors=blue!30!black]{hyperref}

@@ -3,35 +3,7 @@
 %    \begin{macrocode}
 %<*classXimera>
 \def\theoutcomes{}
-
-\ifweb%
-  \newcommand{\outcome}[1]{}
-\else%
-  \newwrite\outcomefile
-  \immediate\openout\outcomefile=\jobname.oc
-
-  \newcommand{\outcome}[1]{
-      \ifoutcomestrue% If we invoke |\outcome|, then we should have outcomes and thus we will flag it as true.
-      \edef\theoutcomes{\theoutcomes #1~}%
-      \immediate\write\outcomefile{\unexpanded{\outcome}{#1}}
-      }
-\fi%
+\newcommand{\outcome}[1]{}
 %</classXimera>
 %    \end{macrocode}
-% These can appear in either the preamble or in problem environments.
-% with pdflatex, we produce the .oc file which includes ALL the
-% outcomes; in the tex4ht world, we just produce spans for the
-% specific outcomes.
-%    \begin{macrocode}
-%<*cfgXimera>
-\renewcommand{\outcome}[1]{
-  \Configure{@HEAD}{\HCode{<meta name="learning-outcome" content="#1"/>\Hnewline}}
-}
-% Sometimes there are no outcomes at all
-\IfFileExists{\jobname.oc}{\input{\jobname.oc}}{}
 
-\renewcommand{\outcome}[1]{%
-  \HCode{<span class="learning-outcome">#1</span>}
-}
-%</cfgXimera>
-%    \end{macrocode}

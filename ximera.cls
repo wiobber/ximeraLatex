@@ -9,6 +9,7 @@
 %% src/options.dtx  (with options: `classXimera')
 %% src/packages.dtx  (with options: `classXimera')
 %% src/hyperref.dtx  (with options: `classXimera')
+%% src/graphics.dtx  (with options: `classXimera')
 %% src/paragraphs.dtx  (with options: `classXimera')
 %% src/suppress.dtx  (with options: `classXimera')
 %% src/makeCounter.dtx  (with options: `classXimera')
@@ -49,6 +50,7 @@
 %% src/jax.dtx  (with options: `classXimera')
 %% src/ungraded.dtx  (with options: `classXimera')
 %% src/sectioning.dtx  (with options: `classXimera')
+%% src/a11y.dtx  (with options: `classXimera')
 %% ------------:| ------------------------------------------------------------
 %%       ximera:| Simultaneously writing print and online interactive materials
 %%       Author:| Jim Fowler and Oscar Levin and Jason Nowell and Hans Parshall and Bart Snapp
@@ -58,8 +60,8 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesClass{ximera}
- [2020/01/15 v2.00
- Simultaneously write print and online interactive materials]
+ [2021/03/15 v2.00
+ Simultaneously target PDF and the web]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,11 +142,11 @@
 \RequirePackage[makeroom]{cancel}
 \RequirePackage{everyhook}
 \RequirePackage{enumitem}
-\RequirePackage{titlesec}
+\RequirePackage[pagestyles]{titlesec}
 \RequirePackage{titletoc}
 \RequirePackage{titling}
+\RequirePackage{xcolor}
 \RequirePackage{url}
-\RequirePackage[table]{xcolor}
 \RequirePackage{fancyvrb}
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
@@ -167,11 +169,16 @@
 \ifweb
   \usepackage[OT1]{fontenc}
 \fi
-\ifdefined\HCode
+\ifweb
 \RequirePackage{hyperref}
 \else
 \RequirePackage[pdfpagelabels,colorlinks=true,allcolors=blue!30!black]{hyperref}
 \pdfstringdefDisableCommands{\def\hskip{}}%% quiets warning
+\fi
+\RequirePackage{graphicx}
+\ifweb
+\DeclareGraphicsExtensions{.eps,.bmp}
+\DeclareGraphicsRule{.png}{bmp}{}{}
 \fi
 \ifweb
 \PushPreHook{par}{\special{html <p>}}
@@ -227,8 +234,14 @@
 \evensidemargin 62pt
 \textwidth 345pt
 \headheight 14pt
-\ifweb\paperheight 100in\fi
+\ifweb\paperheight 100in\PassOptionsToPackage{margin=1in}{geometry}\fi
 \RequirePackage{geometry}
+\ifdefined\snapshot\AtBeginDocument{%
+  \snapshot%
+  \hsize=\directjs{tex.print(tex.hsize)}pt%
+  \setlength{\textwidth}{\directjs{tex.print(tex.hsize)}pt}%}
+  \setlength{\linewidth}{\directjs{tex.print(tex.hsize)}pt}%}
+}\fi
 
 \newcommand{\license}{\excludecomment}
 
@@ -236,19 +249,8 @@
 
 \renewcommand{\tag}{\excludecomment}
 \def\theoutcomes{}
+\newcommand{\outcome}[1]{}
 
-\ifweb%
-  \newcommand{\outcome}[1]{}
-\else%
-  \newwrite\outcomefile
-  \immediate\openout\outcomefile=\jobname.oc
-
-  \newcommand{\outcome}[1]{
-      \ifoutcomestrue% If we invoke |\outcome|, then we should have outcomes and thus we will flag it as true.
-      \edef\theoutcomes{\theoutcomes #1~}%
-      \immediate\write\outcomefile{\unexpanded{\outcome}{#1}}
-      }
-\fi%
 \everymath{\displaystyle}
 \let\prelim\lim
 \renewcommand{\lim}{\displaystyle\prelim}
@@ -375,6 +377,10 @@
 
 \providecommand{\latexProblemContent}[1]{#1}
 \Make@Counter{Iteration@probCnt}
+\ifweb
+\newcommand{\hang}{}% no decoration on the web
+\newcommand{\hung}{}
+\else
 \newcommand{\hang}{% top theorem decoration
   \begingroup%
   \setlength{\unitlength}{.005\linewidth}% \linewidth/200
@@ -405,6 +411,7 @@
     \end{picture}%
   \endgroup%
 }%
+\fi
 \MakeCounter{problem}
 \newcommand{\problemNumber}{
 \ifcsname c@depth\Roman{problem@Depth}Count\endcsname% Check to see if counter exists
@@ -471,6 +478,8 @@
 \problemEnvironmentEnd
 }
 
+\ximerizedEnvironment{problem}
+
 \newenvironment{exercise}[1][2in]%
 {%Env start code
 \problemEnvironmentStart{#1}{Exercise}
@@ -478,6 +487,8 @@
 {%Env end code
 \problemEnvironmentEnd
 }
+
+\ximerizedEnvironment{exercise}
 
 \newenvironment{exploration}[1][2in]%
 {%Env start code
@@ -487,6 +498,8 @@
 \problemEnvironmentEnd
 }
 
+\ximerizedEnvironment{exploration}
+
 \newenvironment{question}[1][2in]%
 {%Env start code
 \problemEnvironmentStart{#1}{Question}
@@ -494,6 +507,8 @@
 {%Env end code
 \problemEnvironmentEnd
 }
+
+\ximerizedEnvironment{question}
 
 \newcounter{hintLevel}
 \setcounter{hintLevel}{0}
@@ -527,6 +542,7 @@
 \let\abstract\relax
 \let\endabstract\relax
 \NewEnviron{abstract}{\protected@xdef\theabstract{\BODY}}
+
 \let\@emptyauthor\@author
 \def\author#1{
     \gdef\@author{#1}% Defines activity author
@@ -647,8 +663,12 @@ Interactive
 }
 
 
+\ifweb
+\newcommand{\graph}[2][]{\special{ximera:rule graph #2}% FIXME: handle keyvalue arguments
+  \rule[-0.75em]{0.8\textwidth}{0.8\textwidth}}
+\else
 \newcommand{\graph}[2][]{\text{Graph of $#2$}}
-
+\fi
 
 \newcommand*{\link}[2][]{#1%
 \ifthenelse{\equal{#1}{}}%
@@ -656,7 +676,13 @@ Interactive
 {\footnote{See #1 at \url{#2}}}
 }
 
+\ifweb
+\newcommand{\youtube}[1]{\special{ximera:rule youtube #1}
+  \rule[-0.75em]{0.72\textwidth}{0.405\textwidth}}
+\else
 \newcommand{\youtube}[1]{YouTube link: \url{https://www.youtube.com/watch?v=#1}}
+\fi
+
 \define@key{answer}{given}[true]{\def\ans@given{#1}}
 \define@key{answer}{tolerance}{\def\ans@tol{#1}}
 \define@key{answer}{validator}{}
@@ -724,15 +750,14 @@ Interactive
   \renewcommand{\varrho}{\string\rho}
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
-  %[#2]
-  \rule[-0.5em]{\widthof{#2}}{2.5em}
+  \special{ximera:rule answer #2}
+  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em}
   \endgroup
 }
 \else
 \newcommand{\answer}[2][]{%
 \ifmmode%
 \setkeys{answer}{#1}%
-\recordvariable{\ans@id}
 \ifthenelse{\boolean{\ans@given}}
 {% Start then statement
 \ifhandout
@@ -907,6 +932,15 @@ Interactive
 \newboolean{given} %% required for freeResponse
 \setboolean{given}{true} %% could be replaced by a key=value pair later if needed
 
+\ifweb
+\newenvironment{freeResponse}[1][false]%
+{\special{ximera:rule free-response}
+
+  \noindent\rule{\hsize}{1in}
+
+}%
+{}%
+\else
 \ifhandout
 \newenvironment{freeResponse}[1][false]%
 {%
@@ -946,8 +980,7 @@ Interactive
 \end{trivlist}
 }
 \fi
-
-
+\fi
 \DefineVerbatimEnvironment{code}{Verbatim}{numbers=left,frame=lines,label=Code,labelposition=topline}
 \DefineVerbatimEnvironment{python}{Verbatim}{numbers=left,frame=lines,label=Python,labelposition=topline}
 \DefineVerbatimEnvironment{javascriptCode}{Verbatim}{numbers=left,frame=lines,label=JavaScript,labelposition=topline}
@@ -1116,8 +1149,15 @@ Interactive
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{\special{html <h5>}}[\special{html </h5>}]
 \titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{\special{html <h6>}}[\special{html </h6>}]
 \fi
+\ifweb
+\pretocmd{\itemize}{\special{html <ul>}}{}{}
+\apptocmd{\enditemize}{\special{html </ul>}}{}{}
+\pretocmd{\enumerate}{\special{html <ol>}}{}{}
+\apptocmd{\endenumerate}{\special{html </ol>}}{}{}
+\pretocmd{\@item}{\special{html <li>}}{}{}
+\fi
 %% 
-%% Copyright (C) 2018-2020 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
+%% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
 %% 
 %% This work may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License (LPPL), either version 1.3c of this
