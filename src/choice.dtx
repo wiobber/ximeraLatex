@@ -44,21 +44,42 @@
 % \subsubsection{Choices}
 % \DescribeMacro{\choice}{Like |\item| but for choice environments.}
 % choice command denotes a possible answer choice for the multiple choice question.
+% To make this work online, we must insert a rule below the choice entry. We'll do this now
+% with |\@itemboxup| and  |\@itemredact|.
 %    \begin{macrocode}
 %<*classXimera>
+\newcommand{\@itemboxup}[1]{\parbox[t]{\linewidth-\labelsep-\labelwidth}{#1}}
+\newcommand{\@itemredact}[1]{
+  \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+  \newlength\@mytmplen %% so we do it here
+  \setlength\@mytmplen{\depthof{\@itemboxup{#1}}} %% Getting depth of text
+  \rule[-\@mytmplen] %% this is where the \@mytmplen was needed -- I couldn't do "-\depthof"
+       {\linewidth-\labelsep-\labelwidth} %% textwidth in lists
+       {\totalheightof{\@itemboxup{#1}}} %% height of box, rule DONE
+       \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
+}
 \newcommand{\choice}[2][]{%
-\setkeys{choice}{#1}%
+\setkeys{choice}{#1}%% options are 'correct' or nothing
+\ifweb
+\ifthenelse{\boolean{\choice@correct}}
+    {
+    \item{\@itemredact{#2}}
+    }
+    {
+    \item{\@itemredact{#2}}
+    }
+\else
 \item{#2}
 \ifthenelse{\boolean{\choice@correct}}
     {% Begin then result
-    \ifhandout% if it's a handout do nothing.
-    \else% otherwise place a checkmark when you select the "correct choice"... maybe? -- Jason
+    \ifhandout% if it's a handout do nothing
+    \else% otherwise use a checkmark to indicate the correct choice to the author
         \,\checkmark\,\setkeys{choice}{correct=false}
     \fi
     }% End then result
     {}% Begin/End else result.
 }
-
+\fi
 %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
 % Is there a reason we can't just always use this as default? -- Jason
 \newcommand{\choiceEXP}[2][]{%
