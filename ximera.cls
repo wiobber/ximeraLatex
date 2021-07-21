@@ -9,7 +9,6 @@
 %% src/options.dtx  (with options: `classXimera')
 %% src/packages.dtx  (with options: `classXimera')
 %% src/hyperref.dtx  (with options: `classXimera')
-%% src/graphics.dtx  (with options: `classXimera')
 %% src/paragraphs.dtx  (with options: `classXimera')
 %% src/suppress.dtx  (with options: `classXimera')
 %% src/makeCounter.dtx  (with options: `classXimera')
@@ -50,7 +49,6 @@
 %% src/jax.dtx  (with options: `classXimera')
 %% src/ungraded.dtx  (with options: `classXimera')
 %% src/sectioning.dtx  (with options: `classXimera')
-%% src/a11y.dtx  (with options: `classXimera')
 %% ------------:| ------------------------------------------------------------
 %%       ximera:| Simultaneously writing print and online interactive materials
 %%       Author:| Jim Fowler and Oscar Levin and Jason Nowell and Hans Parshall and Bart Snapp
@@ -174,11 +172,6 @@
 \else
 \RequirePackage[pdfpagelabels,colorlinks=true,allcolors=blue!30!black]{hyperref}
 \pdfstringdefDisableCommands{\def\hskip{}}%% quiets warning
-\fi
-\RequirePackage{graphicx}
-\ifweb
-\DeclareGraphicsExtensions{.eps,.bmp}
-\DeclareGraphicsRule{.png}{bmp}{}{}
 \fi
 \ifweb
 \PushPreHook{par}{\special{html <p>}}
@@ -789,19 +782,38 @@ Interactive
 \setkeys{choice}{correct=false,value=}
 \setkeys{multipleChoice}{id=}
 \setkeys{otherchoice}{correct=false,value=}
+\newcommand{\@itemboxup}[1]{\parbox[t]{\linewidth-\labelsep-\labelwidth}{#1}}
+\newcommand{\@itemredact}[1]{
+  \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+  \newlength\@mytmplen %% so we do it here
+  \setlength\@mytmplen{\depthof{\@itemboxup{#1}}} %% Getting depth of text
+  \rule[-\@mytmplen] %% this is where the \@mytmplen was needed -- I couldn't do "-\depthof"
+       {\linewidth-\labelsep-\labelwidth} %% textwidth in lists
+       {\totalheightof{\@itemboxup{#1}}} %% height of box, rule DONE
+       \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
+}
 \newcommand{\choice}[2][]{%
-\setkeys{choice}{#1}%
+\setkeys{choice}{#1}%% options are 'correct' or nothing
+\ifweb
+\ifthenelse{\boolean{\choice@correct}}
+    {
+    \item{\@itemredact{#2}}
+    }
+    {
+    \item{\@itemredact{#2}}
+    }
+\else
 \item{#2}
 \ifthenelse{\boolean{\choice@correct}}
     {% Begin then result
-    \ifhandout% if it's a handout do nothing.
-    \else% otherwise place a checkmark when you select the "correct choice"... maybe? -- Jason
+    \ifhandout% if it's a handout do nothing
+    \else% otherwise use a checkmark to indicate the correct choice to the author
         \,\checkmark\,\setkeys{choice}{correct=false}
-    \fi
+    \fi% for handout
     }% End then result
     {}% Begin/End else result.
+    \fi% for web
 }
-
 \newcommand{\choiceEXP}[2][]{%
 \expandafter\setkeys\expandafter{choice}{#1}%
 \item{#2}
@@ -1148,13 +1160,6 @@ Interactive
 \titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{\special{html <h4>}}[\special{html </h4>}]
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{\special{html <h5>}}[\special{html </h5>}]
 \titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{\special{html <h6>}}[\special{html </h6>}]
-\fi
-\ifweb
-\pretocmd{\itemize}{\special{html <ul>}}{}{}
-\apptocmd{\enditemize}{\special{html </ul>}}{}{}
-\pretocmd{\enumerate}{\special{html <ol>}}{}{}
-\apptocmd{\endenumerate}{\special{html </ol>}}{}{}
-\pretocmd{\@item}{\special{html <li>}}{}{}
 \fi
 %% 
 %% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
