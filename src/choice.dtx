@@ -63,10 +63,10 @@
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\@itemredact{#2}}
+    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice correct}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
     }
     {
-    \item{\@itemredact{#2}}
+    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
     }
 \else
 \item{#2}
@@ -75,11 +75,11 @@
     \ifhandout% if it's a handout do nothing
     \else% otherwise use a checkmark to indicate the correct choice to the author
         \,\checkmark\,\setkeys{choice}{correct=false}
-    \fi
+    \fi% for handout
     }% End then result
     {}% Begin/End else result.
+    \fi% for web
 }
-\fi
 %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
 % Is there a reason we can't just always use this as default? -- Jason
 \newcommand{\choiceEXP}[2][]{%

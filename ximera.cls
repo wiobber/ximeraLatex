@@ -797,10 +797,10 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\@itemredact{#2}}
+    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice correct}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
     }
     {
-    \item{\@itemredact{#2}}
+    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
     }
 \else
 \item{#2}
