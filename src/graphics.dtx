@@ -1,0 +1,11 @@
+% \subsubsection{Graphics}
+% We need to handle graphics in various special ways on the web.
+%    \begin{macrocode}
+%<*classXimera>
+\RequirePackage{graphicx}
+\ifweb
+\DeclareGraphicsExtensions{.eps,.bmp}
+\DeclareGraphicsRule{.png}{bmp}{}{}
+\fi
+%</classXimera>
+%    \end{macrocode}

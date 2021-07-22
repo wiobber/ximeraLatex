@@ -1,0 +1,10 @@
+% \subsubsection{Accessibility}
+%<*classXimera>
+\ifweb
+\pretocmd{\itemize}{\special{html <ul>}}{}{}
+\apptocmd{\enditemize}{\special{html </ul>}}{}{}
+\pretocmd{\enumerate}{\special{html <ol>}}{}{}
+\apptocmd{\endenumerate}{\special{html </ol>}}{}{}
+\pretocmd{\@item}{\special{html <li>}}{}{}
+\fi
+%</classXimera>
