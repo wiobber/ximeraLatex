@@ -5,6 +5,7 @@
 % Jim: Originally this was \renewcommand{\theenumi}{$(\mathrm{\alph{enumi}})$}
 % but that breaks tex4ht because mathmode can only be processed by mathjax.
 % so now I made this just italicized.
+% Bart: As of July 2021, I *think* the comment above is obsolete.
 %    \end{macrocode}
 % \subsubsection{Options}
 %    \begin{macrocode}
@@ -55,7 +56,7 @@
   \setlength\@mytmplen{\depthof{\@itemboxup{#1}}} %% Getting depth of text
   \rule[-\@mytmplen] %% this is where the \@mytmplen was needed -- I couldn't do "-\depthof"
        {\linewidth-\labelsep-\labelwidth} %% textwidth in lists
-       {\totalheightof{\@itemboxup{#1}}} %% height of box, rule DONE
+       {\totalheightof{\@itemboxup{#1}}} %% height of box, and the rule has been drawn
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcommand{\choice}[2][]{%
@@ -63,10 +64,10 @@
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice correct}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
+    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}
     }
     {
-    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
+    \item{\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}}
     }
 \else
 \item{#2}
@@ -143,14 +144,21 @@
 \let\inlinechoice\choice
 %</htXimera>
 %    \end{macrocode}
-
+% \subsubsection{Checkwork}
+% The command |\@checkwork| helps make a button to validate environments that use choice
+%    \begin{macrocode}
+%<*classXimera>
+\def\@checkworkwidth{6em}
+\newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
+%</classXimera>
 % \subsubsection{Environment(s)}
 % The environment |multipleChoice@| is for internal use only. 
 % \DescribeEnv{multipleChoice}{Wrap |\choice|s in a |multipleChoice| environment to make a multiple choice question.}
 %    \begin{macrocode}
 %<*classXimera>
 \newenvironment{multipleChoice}[1][]
-	{% Environment Start Code
+        {% Environment Start Code
+        \special{ximera:rule multiplechoice begin}         
 	\setkeys{multipleChoice}{#1}%
 	\begin{trivlist}
 		\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
@@ -159,6 +167,8 @@
 	{% Environment End Code
 		\end{enumerate}
 	\end{trivlist}
+        \hfill\@checkwork % button for checking work
+        \special{ximera:rule multiplechoice end}
 	}
 
 %multipleChoice@ is for internal use only! (used in wordChoice)

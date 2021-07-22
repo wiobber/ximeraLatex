@@ -744,7 +744,7 @@ Interactive
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
   \special{ximera:rule answer #2}
-  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em}
+  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em} % Assumes that the height of the answer is the standard line height
   \endgroup
 }
 \else
@@ -753,10 +753,10 @@ Interactive
 \setkeys{answer}{#1}%
 \ifthenelse{\boolean{\ans@given}}
 {% Start then statement
-\ifhandout
-#2
-\else
-\underset{\scriptstyle\mathrm{given}}{\fbox{\ensuremath{#2}}}
+\ifhandout % In handout mode, if answer is given
+#2 % just give the answer
+\else % When not in handout mode,
+\underset{\scriptstyle\mathrm{given}}{\fbox{\ensuremath{#2}}} % make a box with the word `given' underneath
 \fi
 }% End then statement
 {% Start else statement
@@ -789,7 +789,7 @@ Interactive
   \setlength\@mytmplen{\depthof{\@itemboxup{#1}}} %% Getting depth of text
   \rule[-\@mytmplen] %% this is where the \@mytmplen was needed -- I couldn't do "-\depthof"
        {\linewidth-\labelsep-\labelwidth} %% textwidth in lists
-       {\totalheightof{\@itemboxup{#1}}} %% height of box, rule DONE
+       {\totalheightof{\@itemboxup{#1}}} %% height of box, and the rule has been drawn
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcommand{\choice}[2][]{%
@@ -797,10 +797,10 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice correct}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
+    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}
     }
     {
-    \item{\special{ximera:rule multiplechoice begin}\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule multiplechoice end}}
+    \item{\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}}
     }
 \else
 \item{#2}
@@ -855,9 +855,11 @@ Interactive
 \hspace{-.25em}\ignorespaces%
 }
 
-
+\def\@checkworkwidth{6em}
+\newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
-{% Environment Start Code
+        {% Environment Start Code
+        \special{ximera:rule multiplechoice begin}
 \setkeys{multipleChoice}{#1}%
 \begin{trivlist}
 \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
@@ -866,6 +868,8 @@ Interactive
 {% Environment End Code
 \end{enumerate}
 \end{trivlist}
+        \hfill\@checkwork % button for checking work
+        \special{ximera:rule multiplechoice end}
 }
 
 \newenvironment{multipleChoice@}[1][]{}{)}
