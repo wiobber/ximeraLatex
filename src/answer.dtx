@@ -94,7 +94,7 @@
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
   \special{ximera:rule answer #2}
-  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em}
+  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em} % Assumes that the height of the answer is the standard line height
   \endgroup
 }
 \else
@@ -103,10 +103,10 @@
 		\setkeys{answer}{#1}%
 		\ifthenelse{\boolean{\ans@given}}
 			{% Start then statement
-			\ifhandout 
-				#2
-			\else
-				\underset{\scriptstyle\mathrm{given}}{\fbox{\ensuremath{#2}}}
+			\ifhandout % In handout mode, if answer is given
+				#2 % just give the answer
+			\else % When not in handout mode, 
+				\underset{\scriptstyle\mathrm{given}}{\fbox{\ensuremath{#2}}} % make a box with the word `given' underneath
 			\fi
 			}% End then statement
 			{% Start else statement
