@@ -4,7 +4,9 @@
 %<*classXimera>
 \let\abstract\relax
 \let\endabstract\relax
-% Use of environ package, may want to find a better way.
+% Every online activity needs a single sentence description. This is
+% useful for making ``cards'' representing the structure of a course. Here we use the
+% environ package.
 \NewEnviron{abstract}{\protected@xdef\theabstract{\BODY}}
 %</classXimera>
 %    \end{macrocode}
