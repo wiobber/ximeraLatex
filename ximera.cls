@@ -9,6 +9,7 @@
 %% src/options.dtx  (with options: `classXimera')
 %% src/packages.dtx  (with options: `classXimera')
 %% src/hyperref.dtx  (with options: `classXimera')
+%% src/graphics.dtx  (with options: `classXimera')
 %% src/paragraphs.dtx  (with options: `classXimera')
 %% src/suppress.dtx  (with options: `classXimera')
 %% src/makeCounter.dtx  (with options: `classXimera')
@@ -49,6 +50,7 @@
 %% src/jax.dtx  (with options: `classXimera')
 %% src/ungraded.dtx  (with options: `classXimera')
 %% src/sectioning.dtx  (with options: `classXimera')
+%% src/a11y.dtx  (with options: `classXimera')
 %% ------------:| ------------------------------------------------------------
 %%       ximera:| Simultaneously writing print and online interactive materials
 %%       Author:| Jim Fowler and Oscar Levin and Jason Nowell and Hans Parshall and Bart Snapp
@@ -172,6 +174,11 @@
 \else
 \RequirePackage[pdfpagelabels,colorlinks=true,allcolors=blue!30!black]{hyperref}
 \pdfstringdefDisableCommands{\def\hskip{}}%% quiets warning
+\fi
+\RequirePackage{graphicx}
+\ifweb
+\DeclareGraphicsExtensions{.eps,.bmp}
+\DeclareGraphicsRule{.png}{bmp}{}{}
 \fi
 \ifweb
 \PushPreHook{par}{\special{html <p>}}
@@ -629,9 +636,7 @@
     \par\vspace{2em}
     \phantomsection\addcontentsline{toc}{subsection}{\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title}%
   }}
-\NewEnviron{image}[1][3in]{%
-  \begin{center}\resizebox{#1}{!}{\BODY}\end{center}% resize and center
-}
+\newenvironment{image}[1][]{\begin{center}}{\end{center}}
 \newcommand{\alt}[1]{}
 
 
@@ -1164,6 +1169,13 @@ Interactive
 \titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{\special{html <h4>}}[\special{html </h4>}]
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{\special{html <h5>}}[\special{html </h5>}]
 \titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{\special{html <h6>}}[\special{html </h6>}]
+\fi
+\ifweb
+\pretocmd{\itemize}{\special{html <ul>}}{}{}
+\apptocmd{\enditemize}{\special{html </ul>}}{}{}
+\pretocmd{\enumerate}{\special{html <ol>}}{}{}
+\apptocmd{\endenumerate}{\special{html </ol>}}{}{}
+\pretocmd{\@item}{\special{html <li>}}{}{}
 \fi
 %% 
 %% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>

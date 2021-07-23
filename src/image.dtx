@@ -1,11 +1,11 @@
 % \subsubsection{Images}
-% \DescribeEnv{image}{Place images inside an |image| environment.  On paper, this centers the image.  On the web, this provides additional benefits.}
+% \DescribeEnv{image}{Place images inside an |image| environment.  On paper, this centers the image}
 %    \begin{macrocode}
 %<*classXimera>
-%\newenvironment{image}[1][]{\begin{center}}{\end{center}}
-\NewEnviron{image}[1][3in]{% 
-  \begin{center}\resizebox{#1}{!}{\BODY}\end{center}% resize and center
-}
+\newenvironment{image}[1][]{\begin{center}}{\end{center}}
+%\NewEnviron{image}[1][3in]{%  Previous code, that also resized. This needs to be done at the level of includegraphics and tikz.
+%  \begin{center}\resizebox{#1}{!}{\BODY}\end{center}% resize and center
+%}
 %</classXimera>
 %    \end{macrocode}
 % \DescribeMacro{\alt}{Inside an |image| environment, |\alt| provides alt-text for assistive technology like screenreaders.}
