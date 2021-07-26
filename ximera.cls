@@ -818,18 +818,20 @@ Interactive
     {}% Begin/End else result.
     \fi% for web
 }
-\newcommand{\choiceEXP}[2][]{%
-\expandafter\setkeys\expandafter{choice}{#1}%
-\item{#2}
-\ifthenelse{\boolean{\choice@correct}}
-{% Begin then result
-\ifhandout
-\else
-\,\checkmark\,\setkeys{choice}{correct=false}
-\fi
-}% End then result
-{}% Begin/End else result.
-} %% note all the {} are needed in case the choice has [] in it.
+%% %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
+%% % Is there a reason we can't just always use this as default? -- Jason
+%% \newcommand{\choiceEXP}[2][]{% COMMENTED OUT BY SNAPP JULY 26 2021
+%%  \expandafter\setkeys\expandafter{choice}{#1}%
+%%  \item{#2}
+%%  \ifthenelse{\boolean{\choice@correct}}
+%%  {% Begin then result
+%%  \ifhandout
+%%  \else
+%%  \,\checkmark\,\setkeys{choice}{correct=false}
+%%  \fi
+%%  }% End then result
+%%  {}% Begin/End else result.
+%%  } %% note all the {} are needed in case the choice has [] in it.% COMMENTED OUT BY SNAPP JULY 26 2021
 
 \newcommand{\otherchoice}[2][]{%
 \ignorespaces%
