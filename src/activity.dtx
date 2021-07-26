@@ -8,35 +8,35 @@
 %    \begin{macrocode}
 %<*classXourse>
 \newcommand{\skip@preamble}{%
-    \let\document\relax\let\enddocument\relax%
-    \newenvironment{document}{\let\input\otherinput}{}%
-    \renewcommand{\documentclass}[2][subfiles]{}}
+    \let\document\relax\let\enddocument\relax% Turns off begin/end document
+    \newenvironment{document}{\let\input\@otherinput}{}% makes @otherinput do what input used to do
+    \renewcommand{\documentclass}[2][subfiles]{}} %% Doesn't allow any non document commands in preamble
 %    \end{macrocode}
 % Note that the new command |\subfile| calls for |\skip@preamble| \emph{within a group}. The changes to |document| and |\documentclass| are undone after the inclusion of the subfile.
 %
 % Numbering starts a page too soon without this:
 %    \begin{macrocode}
-\let\otherinput\input 
+\let\@otherinput\input 
 %    \end{macrocode}
 % Store usual |\maketitle| as |\othermaketitle|
 %    \begin{macrocode}
-\let\othermaketitle\maketitle
+\let\othermaketitle\maketitle %% for the Xourse title
 %    \end{macrocode}
 % \DescribeMacro{\maketitle}{In a \textsf{xourse} file, |\maketitle| is redefined to give course packet title page and toc.}
 %    \begin{macrocode}
-\renewcommand{\maketitle}{ %
+\renewcommand{\maketitle}{ % Xourse title page
 \pagestyle{empty}
 \begin{center}
 ~\\ %puts space at top of page to move title down.
 \vskip .25\textheight
-\hrulefill\\
+\hrulefill\\  % generic lines around Xourse title
 \vskip 1em
-\bfseries{\Huge \@title} \\
-\hrulefill\\
+\bfseries{\Huge \@title} \\  % Xourse Title
+\hrulefill\\ % generic lines around Xourse title
 \vskip 3em
-{\Large \@author}
+{\Large \@author} % Authors
 \vskip 2em
-{\large \@date}
+{\large \@date} % Date  
 \end{center}
 \clearpage
 %    \end{macrocode}
@@ -77,20 +77,28 @@
 % preamble of the included file.
 %    \begin{macrocode}
 %<*classXourse>
+\ifweb
+\newcommand{\activity}[2][]{%
+	\setkeys{activity}{#1}
+  \renewcommand{\input}[1]{}
+  \begingroup\skip@preamble\@title\endgroup\clearpage
+  \let\input\@otherinput}
+\else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
 	\setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup\par\vspace{\topsep}
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
+  \let\input\@otherinput}
 \else
 \newcommand{\activity}[2][]{%
 	\setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup\clearpage
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
+  \let\input\@otherinput}
 \fi
-\relax
+\fi
+%\relax %needed??? COMMENTED 6/2021 Bart
 %</classXourse>
 %    \end{macrocode}
 
@@ -111,14 +119,14 @@
 \newcommand{\practice}[2][]{
 	\setkeys{practice}{#1}%!!!!!
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup
+  \let\input\@otherinput}
 \else
 \newcommand{\practice}[2][]{\texttt{\detokenize{#2}}%% gives file name for practice
 	\setkeys{practice}{#1}%!!!!!
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup
+  \let\input\@otherinput}
 \fi
 \relax
 %</classXourse>

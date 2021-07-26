@@ -53,24 +53,24 @@
 
 
 \newcommand{\skip@preamble}{%
-    \let\document\relax\let\enddocument\relax%
-    \newenvironment{document}{\let\input\otherinput}{}%
-    \renewcommand{\documentclass}[2][subfiles]{}}
-\let\otherinput\input
-\let\othermaketitle\maketitle
-\renewcommand{\maketitle}{ %
+    \let\document\relax\let\enddocument\relax% Turns off begin/end document
+    \newenvironment{document}{\let\input\@otherinput}{}% makes @otherinput do what input used to do
+    \renewcommand{\documentclass}[2][subfiles]{}} %% Doesn't allow any non document commands in preamble
+\let\@otherinput\input
+\let\othermaketitle\maketitle %% for the Xourse title
+\renewcommand{\maketitle}{ % Xourse title page
 \pagestyle{empty}
 \begin{center}
 ~\\ %puts space at top of page to move title down.
 \vskip .25\textheight
-\hrulefill\\
+\hrulefill\\  % generic lines around Xourse title
 \vskip 1em
-\bfseries{\Huge \@title} \\
-\hrulefill\\
+\bfseries{\Huge \@title} \\  % Xourse Title
+\hrulefill\\ % generic lines around Xourse title
 \vskip 3em
-{\Large \@author}
+{\Large \@author} % Authors
 \vskip 2em
-{\large \@date}
+{\large \@date} % Date
 \end{center}
 \clearpage
 \ifnotoc
@@ -83,34 +83,41 @@
 }
 \relax
 
+\ifweb
+\newcommand{\activity}[2][]{%
+\setkeys{activity}{#1}
+  \renewcommand{\input}[1]{}
+  \begingroup\skip@preamble\@title\endgroup\clearpage
+  \let\input\@otherinput}
+\else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
 \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup\par\vspace{\topsep}
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
+  \let\input\@otherinput}
 \else
 \newcommand{\activity}[2][]{%
 \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup\clearpage
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
+  \let\input\@otherinput}
 \fi
-\relax
+\fi
 
 
 \ifhandout
 \newcommand{\practice}[2][]{
 \setkeys{practice}{#1}%!!!!!
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup
+  \let\input\@otherinput}
 \else
 \newcommand{\practice}[2][]{\texttt{\detokenize{#2}}%% gives file name for practice
 \setkeys{practice}{#1}%!!!!!
   \renewcommand{\input}[1]{}
-  \begingroup\skip@preamble\otherinput{#2}\endgroup
-  \let\input\otherinput}
+  \begingroup\skip@preamble\@otherinput{#2}\endgroup
+  \let\input\@otherinput}
 \fi
 \relax
 
