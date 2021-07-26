@@ -120,9 +120,10 @@ Running "make install" installs the files in the local TeX tree.
   \file{xourse.cls}{
     \from{ximera.dtx}{classXourse}
     \from{src/optionsxourse.dtx}{classXourse}
-    \from{src/activity.dtx}{classXourse}
-    \from{src/sectioning.dtx}{classXourse}
     \from{src/logo.dtx}{classXourse}
+    \from{src/activity.dtx}{classXourse}
+    \from{src/title.dtx}{classXourse}
+    \from{src/sectioning.dtx}{classXourse}
     \from{src/graded.dtx}{classXourse}        
   }
 }
@@ -177,6 +178,12 @@ Running "make install" installs the files in the local TeX tree.
 \DocInput{src/options.dtx}
 \DocInput{src/packages.dtx}
 \DocInput{src/pagesetup.dtx}
+\subsection{Document metadata}
+\DocInput{src/metadata.dtx}
+\DocInput{src/abstract.dtx}
+\DocInput{src/title.dtx}
+\DocInput{src/outcomes.dtx}
+\DocInput{src/labels.dtx}
 \subsection{Structure}
 \DocInput{src/paragraphs.dtx}
 \DocInput{src/macros.dtx}
@@ -193,12 +200,6 @@ Running "make install" installs the files in the local TeX tree.
 \DocInput{src/only.dtx}
 \DocInput{src/foldable.dtx}
 \DocInput{src/leash.dtx}
-\subsection{Document metadata}
-\DocInput{src/metadata.dtx}
-\DocInput{src/abstract.dtx}
-\DocInput{src/title.dtx}
-\DocInput{src/outcomes.dtx}
-\DocInput{src/labels.dtx}
 \subsection{Images}
 \DocInput{src/image.dtx}
 \DocInput{src/xkcd.dtx}
@@ -226,11 +227,16 @@ Running "make install" installs the files in the local TeX tree.
 \DocInput{src/suppress.dtx}
 \DocInput{src/ending.dtx}
 \section{xourse.cls}
-\DocInput{src/optionsxourse.dtx}
+\subsection{Glueing activities together}
 \DocInput{src/activity.dtx}
-\DocInput{src/sectioning.dtx}
-\DocInput{src/graded.dtx}
+\subsection{Xourse options}
+\DocInput{src/optionsxourse.dtx}
+\subsection{Xourse Logo}
 \DocInput{src/logo.dtx}
+\subsection{Structure}
+\DocInput{src/sectioning.dtx}
+\subsection{Answerables}
+\DocInput{src/graded.dtx}
 \section{pgfsys-ximera.def}
 \DocInput{src/pgfsys.dtx}
 \end{document}

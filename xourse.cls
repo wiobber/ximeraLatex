@@ -6,9 +6,10 @@
 %%
 %% ximera.dtx  (with options: `classXourse')
 %% src/optionsxourse.dtx  (with options: `classXourse')
-%% src/activity.dtx  (with options: `classXourse')
-%% src/sectioning.dtx  (with options: `classXourse')
 %% src/logo.dtx  (with options: `classXourse')
+%% src/activity.dtx  (with options: `classXourse')
+%% src/title.dtx  (with options: `classXourse')
+%% src/sectioning.dtx  (with options: `classXourse')
 %% src/graded.dtx  (with options: `classXourse')
 %% ------------:| ------------------------------------------------------------
 %%       ximera:| Simultaneously writing print and online interactive materials
@@ -37,6 +38,19 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ximera}}
 \ProcessOptions\relax
 \LoadClass{ximera}
+
+\newcommand*{\logo}[1]{%
+  \ifx\@onlypreamble\@notprerr
+    \ClassError{xourse}{logo can only be used in the preamble}
+      {Move your logo command to the preamble}
+  \else %
+    \IfFileExists{#1}%
+      {\gdef\xourse@logo{#1}}%
+      {\ClassError{xourse}{logo file does not exist}
+        {To use logo, make sure that the referenced image file exists}}%
+  \fi%
+}
+
 
 \newcommand{\skip@preamble}{%
     \let\document\relax\let\enddocument\relax%
@@ -101,21 +115,9 @@
 \relax
 
 
+
 \renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}}
 \renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}
-\newcommand*{\logo}[1]{%
-  \ifx\@onlypreamble\@notprerr
-    \ClassError{xourse}{logo can only be used in the preamble}
-      {Move your logo command to the preamble}
-  \else %
-    \IfFileExists{#1}%
-      {\gdef\xourse@logo{#1}}%
-      {\ClassError{xourse}{logo file does not exist}
-        {To use logo, make sure that the referenced image file exists}}%
-  \fi%
-}
-
-
 \newenvironment{graded}[1]{}{}
 %% 
 %% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
