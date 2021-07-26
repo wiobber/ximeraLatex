@@ -550,10 +550,9 @@
 \def\@author{\@latex@warning@no@line{No \noexpand\author given}}
 \def\and{and }
 
-\let\title\relax
-\newcommand{\title}[1][]{{\protected@xdef\@pretitle{#1}}\protected@xdef\@title}
-
-\title{}
+\let\title\relax% clear the title
+\newcommand{\title}[1][]{{\protected@xdef\@pretitle{#1}}\protected@xdef\@title} % define the new title
+\title{}% give the blank title a value
 
 \newcounter{titlenumber}
 \renewcommand{\thetitlenumber}{\arabic{titlenumber}}
