@@ -553,7 +553,8 @@
 \let\title\relax% clear the title
 \newcommand{\title}[1][]{{\protected@xdef\@pretitle{#1}}\protected@xdef\@title} % define the new title
 \title{}% give the blank title a value
-
+\newif\iffirsttitle % For cards. The first title is surely a xourse title
+\firsttitletrue % or exercise list title, which should be ignored when making cards
 \newcounter{titlenumber}
 \renewcommand{\thetitlenumber}{\arabic{titlenumber}}
 \setcounter{titlenumber}{0}
@@ -580,6 +581,8 @@
   \ifweb\special{html <h1>}\fi%
   {\flushleft\large\bfseries \@pretitle\par\vspace{-1em}}
   {\flushleft\LARGE\bfseries {\ifnumbers\thetitlenumber\fi}{\ifnumbers\hspace{1em}\else\hspace{0em}\fi}\@title \par }
+  \iffirsttitle\firsttitlefalse\else\fi
+  \@cardContents% writes card contents when not main title
   \phantomsection%
   \ifnumbers\addcontentsline{toc}{section}{\thetitlenumber~\@title}\else\addcontentsline{toc}{section}{\@title}\fi
   \ifweb\special{html </h1>}\fi%
@@ -622,6 +625,7 @@
                     {\flushleft\LARGE\sffamily\bfseries\thetitlenumber\hspace{1em}\@title \par }%
                     {\vskip .6em\noindent\textit\theabstract\setcounter{problem}{0}\setcounter{sectiontitlenumber}{0}}%
                     \par\vspace{2em}
+                    \@cardContents
                     \phantomsection\addcontentsline{toc}{section}{\textbf{\thetitlenumber\hspace{1em}\@title}}%
                   }}
 
@@ -633,6 +637,7 @@
     {\flushleft\Large\sffamily\bfseries\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title \par}%
     {\vskip .6em\noindent\textit\theabstract}%
     \par\vspace{2em}
+    \@cardContents
     \phantomsection\addcontentsline{toc}{subsection}{\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title}%
   }}
 \newenvironment{image}[1][]{\begin{center}}{\end{center}}
@@ -1140,7 +1145,7 @@ Interactive
 
 \ifdefined\HCode
   \else
-    \newwrite\myfile
+    \newwrite\myfile %% BADBAD -- \myfile is a bad name.
     \immediate\openout\myfile=\jobname.jax
 \fi
 \ifdefined\HCode

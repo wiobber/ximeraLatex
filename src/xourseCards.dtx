@@ -1,0 +1,17 @@
+% \subsubsection{Xourse Cards}
+% We create a Xourse Landing Page, called XLP\jobname.tex.
+%
+% First, create the |XLP\jobname.tex| file.
+%    \begin{macrocode}
+%<*classXourse>
+\newwrite\@xlpfile
+\AtBeginDocument{\immediate\openout\@xlpfile=XLP\jobname.tex%% XLP for xourse landing page
+  \immediate\write\@xlpfile{\unexpanded{\documentclass{article}
+      \usepackage[paperwidth=2in, paperheight=2in,margin=0in]{geometry}
+      \begin{document} % sets up the XLP document
+      \pagestyle{empty}\flushleft}}} 
+\newcommand{\@cardContents}{\immediate\write\@xlpfile{\@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
+\AtEndDocument{\immediate\write\@xlpfile{\unexpanded{\end{document}}}\immediate\closeout\@xlpfile} % finishes XLP document
+%</classXourse>
+%    \end{macrocode}
+

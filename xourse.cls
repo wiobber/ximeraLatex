@@ -6,6 +6,7 @@
 %%
 %% ximera.dtx  (with options: `classXourse')
 %% src/optionsxourse.dtx  (with options: `classXourse')
+%% src/xourseCards.dtx  (with options: `classXourse')
 %% src/logo.dtx  (with options: `classXourse')
 %% src/activity.dtx  (with options: `classXourse')
 %% src/title.dtx  (with options: `classXourse')
@@ -38,6 +39,15 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ximera}}
 \ProcessOptions\relax
 \LoadClass{ximera}
+
+\newwrite\@xlpfile
+\AtBeginDocument{\immediate\openout\@xlpfile=XLP\jobname.tex%% XLP for xourse landing page
+  \immediate\write\@xlpfile{\unexpanded{\documentclass{article}
+      \usepackage[paperwidth=2in, paperheight=2in,margin=0in]{geometry}
+      \begin{document} % sets up the XLP document
+      \pagestyle{empty}\flushleft}}}
+\newcommand{\@cardContents}{\immediate\write\@xlpfile{\@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
+\AtEndDocument{\immediate\write\@xlpfile{\unexpanded{\end{document}}}\immediate\closeout\@xlpfile} % finishes XLP document
 
 \newcommand*{\logo}[1]{%
   \ifx\@onlypreamble\@notprerr
@@ -85,20 +95,23 @@
 
 \ifweb
 \newcommand{\activity}[2][]{%
-\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \begingroup\skip@preamble\@title\endgroup\clearpage
   \let\input\@otherinput}
 \else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
-\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
   \let\input\@otherinput}
 \else
 \newcommand{\activity}[2][]{%
-\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
   \let\input\@otherinput}

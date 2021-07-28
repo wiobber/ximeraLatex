@@ -79,20 +79,23 @@
 %<*classXourse>
 \ifweb
 \newcommand{\activity}[2][]{%
-	\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \begingroup\skip@preamble\@title\endgroup\clearpage
   \let\input\@otherinput}
 \else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
-	\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
   \let\input\@otherinput}
 \else
 \newcommand{\activity}[2][]{%
-	\setkeys{activity}{#1}
+  \setkeys{activity}{#1}
+  \immediate\write\@xlpfile{#2\unexpanded{\\}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
   \let\input\@otherinput}

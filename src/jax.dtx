@@ -6,7 +6,7 @@
 %<*classXimera>
 \ifdefined\HCode
   \else
-    \newwrite\myfile
+    \newwrite\myfile %% BADBAD -- \myfile is a bad name.
     \immediate\openout\myfile=\jobname.jax
 \fi    
 %</classXimera>
