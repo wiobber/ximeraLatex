@@ -65,7 +65,7 @@
   {\flushleft\large\bfseries \@pretitle\par\vspace{-1em}}
   {\flushleft\LARGE\bfseries {\ifnumbers\thetitlenumber\fi}{\ifnumbers\hspace{1em}\else\hspace{0em}\fi}\@title \par }
   \iffirsttitle\firsttitlefalse\else\fi
-  \@cardContents% writes card contents when not main title
+  %\@cardContents% writes card contents when not main title
   \phantomsection%
   \ifnumbers\addcontentsline{toc}{section}{\thetitlenumber~\@title}\else\addcontentsline{toc}{section}{\@title}\fi
   \ifweb\special{html </h1>}\fi%
@@ -108,7 +108,7 @@
                     {\flushleft\LARGE\sffamily\bfseries\thetitlenumber\hspace{1em}\@title \par }%
                     {\vskip .6em\noindent\textit\theabstract\setcounter{problem}{0}\setcounter{sectiontitlenumber}{0}}%
                     \par\vspace{2em}
-                    \@cardContents
+                    %\@cardContents
                     \phantomsection\addcontentsline{toc}{section}{\textbf{\thetitlenumber\hspace{1em}\@title}}%
                   }}
 
@@ -120,7 +120,7 @@
     {\flushleft\Large\sffamily\bfseries\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title \par}%
     {\vskip .6em\noindent\textit\theabstract}%
     \par\vspace{2em}
-    \@cardContents
+    %\@cardContents
     \phantomsection\addcontentsline{toc}{subsection}{\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title}%
   }}
 %</classXimera>

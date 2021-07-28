@@ -99,7 +99,8 @@
   \renewcommand{\input}[1]{}
   \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \begingroup\skip@preamble\@title\endgroup\clearpage
-  \let\input\@otherinput}
+  \let\input\@otherinput
+  \@cardContents}
 \else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
@@ -107,14 +108,18 @@
   \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
-  \let\input\@otherinput}
+  \let\input\@otherinput
+  \@cardContents
+}
 \else
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
   \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
-  \let\input\@otherinput}
+  \let\input\@otherinput
+\@cardContents
+}
 \fi
 \fi
 
