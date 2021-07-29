@@ -77,33 +77,34 @@
 % preamble of the included file.
 %    \begin{macrocode}
 %<*classXourse>
+\ifxoc\else
 \ifweb
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \begingroup\skip@preamble\@title\endgroup\clearpage
   \let\input\@otherinput
-  \@cardContents}
+  \@cardContents{#2}}
 \else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
+  %\immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
   \let\input\@otherinput
-  \@cardContents
+  \@cardContents{#2}
 }
 \else
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
+  %\immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
   \let\input\@otherinput
-\@cardContents
+\@cardContents{#2}
 }
+\fi
 \fi
 \fi
 %\relax %needed??? COMMENTED 6/2021 Bart

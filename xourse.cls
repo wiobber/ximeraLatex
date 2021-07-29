@@ -40,14 +40,18 @@
 \ProcessOptions\relax
 \LoadClass{ximera}
 
-\newwrite\@xlpfile
-\AtBeginDocument{\immediate\openout\@xlpfile=XLP\jobname.tex%% XLP for xourse landing page
-  \immediate\write\@xlpfile{\unexpanded{\documentclass{article}
-      \usepackage[paperwidth=2in, paperheight=2in,margin=0in]{geometry}
-      \begin{document} % sets up the XLP document
+\ifxoc
+\let\origdocument\document %% redefine begindocument to change the page size and then
+\def\document{\geometry{paperwidth=2in, paperheight=2in,margin=0in}\origdocument\input{\jobname.xoc}} %% include \jobname.xoc
+\fi
+\ifxoc\else %% We don't want re-writing when compiling the file
+\newwrite\@xocfile
+\AtBeginDocument{\immediate\openout\@xocfile=\jobname.xoc%% like toc
+  \immediate\write\@xocfile{\unexpanded{%% use \afterpage to set geom
       \pagestyle{empty}\flushleft}}}
-\newcommand{\@cardContents}{\immediate\write\@xlpfile{\@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
-\AtEndDocument{\immediate\write\@xlpfile{\unexpanded{\end{document}}}\immediate\closeout\@xlpfile} % finishes XLP document
+\newcommand{\@cardContents}[1]{\immediate\write\@xocfile{\special{ximera:filename #1}\@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
+\AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}\enddocument}}\immediate\closeout\@xocfile} % finishes xocfile
+\fi
 
 \newcommand*{\logo}[1]{%
   \ifx\@onlypreamble\@notprerr
@@ -93,33 +97,34 @@
 }
 \relax
 
+\ifxoc\else
 \ifweb
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
   \renewcommand{\input}[1]{}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \begingroup\skip@preamble\@title\endgroup\clearpage
   \let\input\@otherinput
-  \@cardContents}
+  \@cardContents{#2}}
 \else
 \ifnonewpage
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
+  %\immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\par\vspace{\topsep}
   \let\input\@otherinput
-  \@cardContents
+  \@cardContents{#2}
 }
 \else
 \newcommand{\activity}[2][]{%
   \setkeys{activity}{#1}
-  \immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
+  %\immediate\write\@xlpfile{\special{ximera:filename #2}} %% Write file name to XLP
   \renewcommand{\input}[1]{}
   \begingroup\skip@preamble\@otherinput{#2}\endgroup\clearpage
   \let\input\@otherinput
-\@cardContents
+\@cardContents{#2}
 }
+\fi
 \fi
 \fi
 

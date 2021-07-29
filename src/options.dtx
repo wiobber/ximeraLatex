@@ -87,6 +87,14 @@
 \firstinlinechoicetrue
 %    \end{macrocode}
 % \end{macro}
+% \begin{macro}{xoc}
+%    This option will render |.xoc| file when compiled by \LaTeX. Note, the user must use \LaTeX, not PDF\LaTeX.
+%    \begin{macrocode}
+\newif\ifxoc
+\xocfalse
+\DeclareOption{xoc}{\xoctrue}
+%    \end{macrocode}
+% \end{macro}
 % \begin{macro}{web}
 %    This option will render the \LaTeX\ source as it is shown on a webpage.  In practice, authors should \textbf{never} use this option, beacause it is automatically activated as needed for Ximera.
 %    \begin{macrocode}
@@ -103,7 +111,7 @@
 \ifweb\xaketrue\fi
 %    \end{macrocode}
 % \end{macro}
-
+%
 %    \begin{macrocode}
 \DeclareOption*{%
   \PassOptionsToClass{\CurrentOption}{article}%

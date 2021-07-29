@@ -117,13 +117,15 @@
 \DeclareOption{wordchoicegiven}{\wordchoicegiventrue}
 \newif\iffirstinlinechoice% Support for other wordchoice command contents.
 \firstinlinechoicetrue
+\newif\ifxoc
+\xocfalse
+\DeclareOption{xoc}{\xoctrue}
 \newif\ifweb
 \webfalse
 \DeclareOption{web}{\webtrue}
 \newif\ifxake
 \xakefalse
 \ifweb\xaketrue\fi
-
 \DeclareOption*{%
   \PassOptionsToClass{\CurrentOption}{article}%
 }
@@ -581,8 +583,6 @@
   \ifweb\special{html <h1>}\fi%
   {\flushleft\large\bfseries \@pretitle\par\vspace{-1em}}
   {\flushleft\LARGE\bfseries {\ifnumbers\thetitlenumber\fi}{\ifnumbers\hspace{1em}\else\hspace{0em}\fi}\@title \par }
-  \iffirsttitle\firsttitlefalse\else\fi
-  %\@cardContents% writes card contents when not main title
   \phantomsection%
   \ifnumbers\addcontentsline{toc}{section}{\thetitlenumber~\@title}\else\addcontentsline{toc}{section}{\@title}\fi
   \ifweb\special{html </h1>}\fi%
@@ -625,7 +625,6 @@
                     {\flushleft\LARGE\sffamily\bfseries\thetitlenumber\hspace{1em}\@title \par }%
                     {\vskip .6em\noindent\textit\theabstract\setcounter{problem}{0}\setcounter{sectiontitlenumber}{0}}%
                     \par\vspace{2em}
-                    %\@cardContents
                     \phantomsection\addcontentsline{toc}{section}{\textbf{\thetitlenumber\hspace{1em}\@title}}%
                   }}
 
@@ -637,7 +636,6 @@
     {\flushleft\Large\sffamily\bfseries\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title \par}%
     {\vskip .6em\noindent\textit\theabstract}%
     \par\vspace{2em}
-    %\@cardContents
     \phantomsection\addcontentsline{toc}{subsection}{\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title}%
   }}
 \newenvironment{image}[1][]{\begin{center}}{\end{center}}
