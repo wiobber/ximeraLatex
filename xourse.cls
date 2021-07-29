@@ -41,16 +41,16 @@
 \LoadClass{ximera}
 
 \ifxoc
-\let\origdocument\document %% redefine begindocument to change the page size and then
-\def\document{\geometry{paperwidth=2in, paperheight=2in,margin=0in}\origdocument\input{\jobname.xoc}} %% include \jobname.xoc
+\let\@origdocument\document %% redefine begindocument to change the page size and then
+\def\document{\geometry{paperwidth=2in, paperheight=2in,margin=0in}\@origdocument\input{\jobname.xoc}} %% include \jobname.xoc
 \fi
 \ifxoc\else %% We don't want re-writing when compiling the file
 \newwrite\@xocfile
 \AtBeginDocument{\immediate\openout\@xocfile=\jobname.xoc%% like toc
   \immediate\write\@xocfile{\unexpanded{%% use \afterpage to set geom
       \pagestyle{empty}\flushleft}}}
-\newcommand{\@cardContents}[1]{\immediate\write\@xocfile{\special{ximera:filename #1}\@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
-\AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}\enddocument}}\immediate\closeout\@xocfile} % finishes xocfile
+\newcommand{\@cardContents}[1]{\immediate\write\@xocfile{\special{ximera:filename #1} \@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
+\AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}}}\immediate\closeout\@xocfile} % finishes xocfile
 \fi
 
 \newcommand*{\logo}[1]{%
