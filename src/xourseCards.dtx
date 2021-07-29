@@ -16,12 +16,33 @@
 \newcommand{\@cardContents}[1]{%
   \immediate\write\@xocfile{%% just writes to the file
     \special{ximera:filename #1}%
+    Activity\unexpanded{\\}%
+    \ifnumbers\thetitlenumber\unexpanded{~}\fi%
     \@title%
     \unexpanded{\\}%
     \theabstract%
     \unexpanded{\newpage}%
-  }
-} 
+}}
+\newcommand{\@chapterCardContents}[1]{%
+  \immediate\write\@xocfile{%% just writes to the file
+    \special{ximera:filename #1}%
+    Chapter\unexpanded{\\}%
+    \thetitlenumber\unexpanded{~}%
+    \@title%
+    \unexpanded{\\}%
+    \theabstract%
+    \unexpanded{\newpage}%
+  }} 
+\newcommand{\@sectionCardContents}[1]{%
+  \immediate\write\@xocfile{%% just writes to the file
+    \special{ximera:filename #1}%
+    Section\unexpanded{\\}%
+    \thetitlenumber.\thesectiontitlenumber\unexpanded{~}%
+    \@title%
+    \unexpanded{\\}%
+    \theabstract%
+    \unexpanded{\newpage}%
+  }} 
 \AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}}}\immediate\closeout\@xocfile} % finishes xocfile
 \fi
 %</classXourse>

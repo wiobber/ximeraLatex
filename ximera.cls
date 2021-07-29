@@ -617,7 +617,7 @@
 \def\activitystyle{}
 \newcounter{sectiontitlenumber}
 \setcounter{secnumdepth}{0}
-\newcommand\chapterstyle{%
+\newcommand\@chapterstyleTitle{%
   \def\activitystyle{activity-chapter}
   \def\maketitle{%
     \addtocounter{titlenumber}{1}%
@@ -628,8 +628,8 @@
                     \phantomsection\addcontentsline{toc}{section}{\textbf{\thetitlenumber\hspace{1em}\@title}}%
                   }}
 
-\newcommand\sectionstyle{%
-  \def\activitystyle{activity-section}
+\newcommand\@sectionstyleTitle{%
+  \def\activitystyle{activity-section} %BADBAD BART: What is this for?
   \def\maketitle{%
     \addtocounter{sectiontitlenumber}{1}
     {\flushleft\small\sffamily\bfseries\@pretitle\par\vspace{-1.5em}}%

@@ -4,7 +4,11 @@
 % \DescribeMacro{\section}{The name of a section inside an activity.}
 %    \begin{macrocode}
 %<*classXourse>
-\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}}
+\newcommand{\chapterstyle}{\@chapterstyleTitle %% see title.dtx for code
+  \renewcommand\@cardContents\@chapterCardContents} %% see xourseCards.dtx
+\newcommand{\sectionstyle}{\@sectionstyleTitle %% see title.dtx for code
+  \renewcommand\@cardContents\@sectionCardContents} %% see xourseCards.dtx
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}} %% changes look of toc
 %</classXourse>
 %<*classXimera>
 \ifweb
@@ -15,7 +19,7 @@
 % \DescribeMacro{\subsection}{The name of a subsection inside an activity.}
 %    \begin{macrocode}
 %<*classXourse>
-\renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}  %% changes look of toc
 %</classXourse>
 %<*classXimera>
 \ifweb

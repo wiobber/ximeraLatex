@@ -52,12 +52,33 @@
 \newcommand{\@cardContents}[1]{%
   \immediate\write\@xocfile{%% just writes to the file
     \special{ximera:filename #1}%
+    Activity\unexpanded{\\}%
+    \ifnumbers\thetitlenumber\unexpanded{~}\fi%
     \@title%
     \unexpanded{\\}%
     \theabstract%
     \unexpanded{\newpage}%
-  }
-}
+}}
+\newcommand{\@chapterCardContents}[1]{%
+  \immediate\write\@xocfile{%% just writes to the file
+    \special{ximera:filename #1}%
+    Chapter\unexpanded{\\}%
+    \thetitlenumber\unexpanded{~}%
+    \@title%
+    \unexpanded{\\}%
+    \theabstract%
+    \unexpanded{\newpage}%
+  }}
+\newcommand{\@sectionCardContents}[1]{%
+  \immediate\write\@xocfile{%% just writes to the file
+    \special{ximera:filename #1}%
+    Section\unexpanded{\\}%
+    \thetitlenumber.\thesectiontitlenumber\unexpanded{~}%
+    \@title%
+    \unexpanded{\\}%
+    \theabstract%
+    \unexpanded{\newpage}%
+  }}
 \AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}}}\immediate\closeout\@xocfile} % finishes xocfile
 \fi
 
@@ -154,8 +175,12 @@
 
 
 
-\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}}
-\renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}
+\newcommand{\chapterstyle}{\@chapterstyleTitle %% see title.dtx for code
+  \renewcommand\@cardContents\@chapterCardContents} %% see xourseCards.dtx
+\newcommand{\sectionstyle}{\@sectionstyleTitle %% see title.dtx for code
+  \renewcommand\@cardContents\@sectionCardContents} %% see xourseCards.dtx
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}} %% changes look of toc
+\renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}  %% changes look of toc
 \newenvironment{graded}[1]{}{}
 %% 
 %% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>
