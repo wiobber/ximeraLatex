@@ -47,9 +47,17 @@
 \ifxoc\else %% We don't want re-writing when compiling the file
 \newwrite\@xocfile
 \AtBeginDocument{\immediate\openout\@xocfile=\jobname.xoc%% like toc
-  \immediate\write\@xocfile{\unexpanded{%% use \afterpage to set geom
-      \pagestyle{empty}\flushleft}}}
-\newcommand{\@cardContents}[1]{\immediate\write\@xocfile{\special{ximera:filename #1} \@title \unexpanded{\\} \theabstract \unexpanded{\newpage}}} % just writes to the file
+  \immediate\write\@xocfile{\unexpanded{\pagestyle{empty}\flushleft}}%
+}
+\newcommand{\@cardContents}[1]{%
+  \immediate\write\@xocfile{%% just writes to the file
+    \special{ximera:filename #1}%
+    \@title%
+    \unexpanded{\\}%
+    \theabstract%
+    \unexpanded{\newpage}%
+  }
+}
 \AtEndDocument{\immediate\write\@xocfile{\unexpanded{\end{document}}}\immediate\closeout\@xocfile} % finishes xocfile
 \fi
 
