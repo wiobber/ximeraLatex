@@ -181,6 +181,16 @@
   \renewcommand\@cardContents\@sectionCardContents} %% see xourseCards.dtx
 \renewcommand*\l@section{\@dottedtocline{1}{1.5em}{4.2em}} %% changes look of toc
 \renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{4.2em}}  %% changes look of toc
+%% %<*htXourse>  %%%%%%%% REMOVE FROM HERE VVVVVVVVVVVVVVVVVVVVVVVVV
+%% \newcounter{ximera@part} %%% REPLACE WITH NEW CARDS
+%% \setcounter{ximera@part}{0}
+%% \renewcommand\part[1]{%
+%% \stepcounter{ximera@part}%
+%% \ifvmode \IgnorePar\fi \EndP%
+%% \HCode{<h1 id="part\arabic{ximera@part}" class="card part">#1</h1>}%
+%% \IgnoreIndent%
+%% }
+%% %</htXourse>  %%%%%%%%%%%%%%% TO HERE^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 \newenvironment{graded}[1]{}{}
 %% 
 %% Copyright (C) 2018-2021 by Bart Snapp <bart.snapp@gmail.com> and Jim Fowler <kisonecat@gmail.com>

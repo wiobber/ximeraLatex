@@ -30,16 +30,16 @@
 % Xourse files can have parts.
 % \DescribeMacro{\part}{The name of a large part of a xourse.}
 %    \begin{macrocode}
-%<*htXourse>
-\newcounter{ximera@part}
-\setcounter{ximera@part}{0}
-\renewcommand\part[1]{%
-\stepcounter{ximera@part}%
-\ifvmode \IgnorePar\fi \EndP%
-\HCode{<h1 id="part\arabic{ximera@part}" class="card part">#1</h1>}%
-\IgnoreIndent%
-}
-%</htXourse>
+%% %<*htXourse>  %%%%%%%% REMOVE FROM HERE VVVVVVVVVVVVVVVVVVVVVVVVV
+%% \newcounter{ximera@part} %%% REPLACE WITH NEW CARDS
+%% \setcounter{ximera@part}{0}
+%% \renewcommand\part[1]{%
+%% \stepcounter{ximera@part}%
+%% \ifvmode \IgnorePar\fi \EndP%
+%% \HCode{<h1 id="part\arabic{ximera@part}" class="card part">#1</h1>}%
+%% \IgnoreIndent%
+%% }
+%% %</htXourse>  %%%%%%%%%%%%%%% TO HERE^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 %    \end{macrocode}
 % Subsubsections and paragraphs also emit appropriate heading tags.
 % \DescribeMacro{\subsubsection}{A subsubsection heading.}
