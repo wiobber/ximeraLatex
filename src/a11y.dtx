@@ -1,6 +1,6 @@
 % \subsubsection{Accessibility}
 %<*classXimera>
-\ifweb
+\ifweb %% using etoolbox
 \pretocmd{\itemize}{\special{html <ul>}}{}{}
 \apptocmd{\enditemize}{\special{html </ul>}}{}{}
 \pretocmd{\enumerate}{\special{html <ol>}}{}{}

@@ -1169,12 +1169,22 @@ Interactive
 \ifweb
 \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{\special{html <h3>}}[\special{html </h3>}]
 \fi
+%% %<*htXourse>  %%%%%%%% REMOVE FROM HERE VVVVVVVVVVVVVVVVVVVVVVVVV
+%% \newcounter{ximera@part} %%% REPLACE WITH NEW CARDS
+%% \setcounter{ximera@part}{0}
+%% \renewcommand\part[1]{%
+%% \stepcounter{ximera@part}%
+%% \ifvmode \IgnorePar\fi \EndP%
+%% \HCode{<h1 id="part\arabic{ximera@part}" class="card part">#1</h1>}%
+%% \IgnoreIndent%
+%% }
+%% %</htXourse>  %%%%%%%%%%%%%%% TO HERE^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 \ifweb
 \titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{\special{html <h4>}}[\special{html </h4>}]
 \titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{\special{html <h5>}}[\special{html </h5>}]
 \titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{\special{html <h6>}}[\special{html </h6>}]
 \fi
-\ifweb
+\ifweb %% using etoolbox
 \pretocmd{\itemize}{\special{html <ul>}}{}{}
 \apptocmd{\enditemize}{\special{html </ul>}}{}{}
 \pretocmd{\enumerate}{\special{html <ol>}}{}{}
