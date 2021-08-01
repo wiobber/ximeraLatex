@@ -804,7 +804,7 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}
+    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}\setkeys{choice}{correct=false}
     }
     {
     \item{\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}}
