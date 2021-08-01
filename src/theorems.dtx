@@ -3,9 +3,39 @@
 %    \begin{macrocode}
 %<*classXimera>
 \ifweb%
+
+\newlength{\ximeraindent}
+\setlength{\ximeraindent}{12pt}
+
+% from https://www.math.mcgill.ca/rags/texmacros/indent.sty
+\newenvironment{indentation}[2]%
+{%
+  \par
+  \setlength{\leftmargin}{#1}%
+  \setlength{\rightmargin}{#2}%
+  \advance\linewidth -\leftmargin
+  \advance\linewidth -\rightmargin
+  \advance\@totalleftmargin\leftmargin
+  \@setpar{{\@@par}}%
+  \parshape 1 \@totalleftmargin \linewidth
+  \ignorespaces
+}%
+{\par}
+
 \newcommand{\ximerizedEnvironment}[1]{%
-  \BeforeBeginEnvironment{#1}{\vspace{1ex}\special{ximera:save}\special{ximera:begin #1}\clearpage}%
-  \AfterEndEnvironment{#1}{\special{ximera:save}\clearpage\special{ximera:end #1}}%
+  \BeforeBeginEnvironment{#1}{%
+    \special{ximera:save}%
+    \clearpage%
+    \special{ximera:begin #1}%
+    \begin{indentation}{\ximeraindent}{0in}
+  }%
+  
+  \AfterEndEnvironment{#1}{%
+    \special{ximera:save}%
+    \clearpage%
+    \special{ximera:end #1}%
+    \end{indentation}
+  }%
 }%
 \else%
 \newcommand{\ximerizedEnvironment}[1]{}%
