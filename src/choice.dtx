@@ -60,6 +60,7 @@
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcommand{\choice}[2][]{%
+\setkeys{choice}{correct=false}%  
 \setkeys{choice}{#1}%% options are 'correct' or nothing
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
@@ -158,7 +159,7 @@
 %<*classXimera>
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
-        \special{ximera:rule multiplechoice begin}         
+        \special{ximera:begin multiplechoice}
 	\setkeys{multipleChoice}{#1}%
 	\begin{trivlist}
 		\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
@@ -168,7 +169,7 @@
 		\end{enumerate}
 	\end{trivlist}
         \hfill\@checkwork % button for checking work
-        \special{ximera:rule multiplechoice end}
+        \special{ximera:end multiplechoice}
 	}
 
 %multipleChoice@ is for internal use only! (used in wordChoice)
