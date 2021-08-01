@@ -257,9 +257,38 @@
 \let\prelim\lim
 \renewcommand{\lim}{\displaystyle\prelim}
 \ifweb%
+
+\newlength{\ximeraindent}
+\setlength{\ximeraindent}{12pt}
+
+\newenvironment{indentation}[2]%
+{%
+  \par
+  \setlength{\leftmargin}{#1}%
+  \setlength{\rightmargin}{#2}%
+  \advance\linewidth -\leftmargin
+  \advance\linewidth -\rightmargin
+  \advance\@totalleftmargin\leftmargin
+  \@setpar{{\@@par}}%
+  \parshape 1 \@totalleftmargin \linewidth
+  \ignorespaces
+}%
+{\par}
+
 \newcommand{\ximerizedEnvironment}[1]{%
-  \BeforeBeginEnvironment{#1}{\vspace{1ex}\special{ximera:save}\special{ximera:begin #1}\clearpage}%
-  \AfterEndEnvironment{#1}{\special{ximera:save}\clearpage\special{ximera:end #1}}%
+  \BeforeBeginEnvironment{#1}{%
+    \special{ximera:save}%
+    \clearpage%
+    \special{ximera:begin #1}%
+    \begin{indentation}{\ximeraindent}{0in}
+  }%
+
+  \AfterEndEnvironment{#1}{%
+    \special{ximera:save}%
+    \clearpage%
+    \special{ximera:end #1}%
+    \end{indentation}
+  }%
 }%
 \else%
 \newcommand{\ximerizedEnvironment}[1]{}%
@@ -619,7 +648,7 @@
 \setcounter{secnumdepth}{0}
 \newcommand\@chapterstyleTitle{%
   \def\activitystyle{activity-chapter}
-  \def\maketitle{%
+  \renewcommand{\maketitle}{%
     \addtocounter{titlenumber}{1}%
                     {\flushleft\small\sffamily\bfseries\@pretitle\par\vspace{-1.5em}}%
                     {\flushleft\LARGE\sffamily\bfseries\thetitlenumber\hspace{1em}\@title \par }%
@@ -630,7 +659,7 @@
 
 \newcommand\@sectionstyleTitle{%
   \def\activitystyle{activity-section} %BADBAD BART: What is this for?
-  \def\maketitle{%
+  \renewcommand{\maketitle}{%
     \addtocounter{sectiontitlenumber}{1}
     {\flushleft\small\sffamily\bfseries\@pretitle\par\vspace{-1.5em}}%
     {\flushleft\Large\sffamily\bfseries\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title \par}%
@@ -751,7 +780,7 @@ Interactive
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
   \special{ximera:rule answer #2}
-  \rule[-0.75em]{\widthof{\hspace{3.5em}#2}}{2.5em} % Assumes that the height of the answer is the standard line height
+  \rule[-0.75em]{\widthof{\hspace{5.5em}#2}}{2.5em} % Assumes that the height of the answer is the standard line height
   \endgroup
 }
 \else
@@ -800,6 +829,7 @@ Interactive
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcommand{\choice}[2][]{%
+\setkeys{choice}{correct=false}%
 \setkeys{choice}{#1}%% options are 'correct' or nothing
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
@@ -868,17 +898,17 @@ Interactive
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
-        \special{ximera:rule multiplechoice begin}
+        \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
 \begin{trivlist}
-\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
+                \ifweb\else\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
 \begin{enumerate}
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
 \end{enumerate}
 \end{trivlist}
         \hfill\@checkwork % button for checking work
-        \special{ximera:rule multiplechoice end}
+        \special{ximera:end multiplechoice}
 }
 
 \newenvironment{multipleChoice@}[1][]{}{)}
@@ -900,9 +930,10 @@ Interactive
 
 
 \newenvironment{selectAll}[1][]
-{\begin{trivlist}\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\begin{enumerate}}
+{\begin{trivlist}
+    \ifweb\else\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
+    \begin{enumerate}}
     {\end{enumerate}\end{trivlist}}
-
 
 
 %% solution environment

@@ -100,7 +100,7 @@
 \setcounter{secnumdepth}{0}
 \newcommand\@chapterstyleTitle{%
   \def\activitystyle{activity-chapter}
-  \def\maketitle{%
+  \renewcommand{\maketitle}{%
     \addtocounter{titlenumber}{1}%
                     {\flushleft\small\sffamily\bfseries\@pretitle\par\vspace{-1.5em}}%
                     {\flushleft\LARGE\sffamily\bfseries\thetitlenumber\hspace{1em}\@title \par }%
@@ -111,7 +111,7 @@
 
 \newcommand\@sectionstyleTitle{%
   \def\activitystyle{activity-section} %BADBAD BART: What is this for?
-  \def\maketitle{%
+  \renewcommand{\maketitle}{%
     \addtocounter{sectiontitlenumber}{1}
     {\flushleft\small\sffamily\bfseries\@pretitle\par\vspace{-1.5em}}%
     {\flushleft\Large\sffamily\bfseries\thetitlenumber.\thesectiontitlenumber\hspace{1em}\@title \par}%

@@ -60,6 +60,7 @@
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcommand{\choice}[2][]{%
+\setkeys{choice}{correct=false}%  
 \setkeys{choice}{#1}%% options are 'correct' or nothing
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
@@ -158,17 +159,17 @@
 %<*classXimera>
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
-        \special{ximera:rule multiplechoice begin}         
+        \special{ximera:begin multiplechoice}
 	\setkeys{multipleChoice}{#1}%
 	\begin{trivlist}
-		\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
+                \ifweb\else\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
 		\begin{enumerate}
 	}% Note this means that \item has to be the first line after \begin{multipleChoice}.
 	{% Environment End Code
 		\end{enumerate}
 	\end{trivlist}
         \hfill\@checkwork % button for checking work
-        \special{ximera:rule multiplechoice end}
+        \special{ximera:end multiplechoice}
 	}
 
 %multipleChoice@ is for internal use only! (used in wordChoice)
@@ -233,7 +234,9 @@
 %    \begin{macrocode}
 %<*classXimera>
 \newenvironment{selectAll}[1][]
-{\begin{trivlist}\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\begin{enumerate}}
+{\begin{trivlist}
+    \ifweb\else\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
+    \begin{enumerate}}
     {\end{enumerate}\end{trivlist}}
 %</classXimera>
 %    \end{macrocode}
@@ -245,13 +248,5 @@
 % boolean, and execute |\makemultiplechoice| at the |\end| of the
 % problem.  We should also make a command called |\showchoices| that
 % will show choices in the handout.
-
-% On the web, |selectAll| is handled just like |multipleChoice|.
-%    \begin{macrocode}
-%<*htXimera>
-\renewenvironment{selectAll}{\refstepcounter{problem}}{}%
-\ConfigureEnv{selectAll}{\stepcounter{identification}\ifvmode \IgnorePar\fi \EndP\HCode{<div class="select-all" id="problem\arabic{identification}">}}{\HCode{</div>}\IgnoreIndent}{}{}
-%</htXimera>
-%    \end{macrocode}
 
 
