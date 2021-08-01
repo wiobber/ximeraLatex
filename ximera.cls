@@ -901,7 +901,7 @@ Interactive
         \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
 \begin{trivlist}
-\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
+                \ifweb\else\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
 \begin{enumerate}
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
@@ -930,9 +930,10 @@ Interactive
 
 
 \newenvironment{selectAll}[1][]
-{\begin{trivlist}\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\begin{enumerate}}
+{\begin{trivlist}
+    \ifweb\else\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
+    \begin{enumerate}}
     {\end{enumerate}\end{trivlist}}
-
 
 
 %% solution environment
