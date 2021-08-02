@@ -834,21 +834,23 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}\setkeys{choice}{correct=false}
+    \item\@itemredact{#2}\special{ximera:rule multiplechoice correct}\setkeys{choice}{correct=false}
     }
     {
-    \item{\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}}
+    \item\@itemredact{#2}\special{ximera:rule multiplechoice incorrect}
     }
 \else
-\item{#2}
 \ifthenelse{\boolean{\choice@correct}}
     {% Begin then result
-    \ifhandout% if it's a handout do nothing
-    \else% otherwise use a checkmark to indicate the correct choice to the author
-        \,\checkmark\,\setkeys{choice}{correct=false}
-    \fi% for handout
-    }% End then result
-    {}% Begin/End else result.
+      \ifhandout
+    \item{#2}% if it's a handout do nothing
+      \else% otherwise use a checkmark to indicate the correct choice to the author
+    \item{#2}\,\checkmark\,\setkeys{choice}{correct=false}
+      \fi% for handout
+    }
+    {\item{#2}}
+    % End then result
+    %{}% Begin/End else result.
     \fi% for web
 }
 %% %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
@@ -894,6 +896,25 @@ Interactive
 \hspace{-.25em}\ignorespaces%
 }
 
+%% %</classXimera> COMMENTED BY SNAPP 8/1/2021
+%% %    \end{macrocode}
+%% % On the HTML side, |\choice| emits |<span>|s.
+%% %    \begin{macrocode}
+%% %<*htXimera>
+%% \newcounter{choiceId}
+%% \renewcommand{\choice}[2][]{%
+%% \setkeys{choice}{correct=false}%
+%% \setkeys{choice}{#1}%
+%% \stepcounter{choiceId}\IgnorePar%
+%% \HCode{<span class="choice }%
+%% \ifthenelse{\boolean{\choice@correct}}{\HCode{correct}}{}
+%% \HCode{" }
+%% \ifthenelse{\equal{\choice@value}{}}{}{\HCode{data-value="\choice@value" }}
+%% \HCode{id="choice\arabic{choiceId}">}%
+%% #2\HCode{</span>}}
+%% \let\inlinechoice\choice
+%% %</htXimera>
+%%    \end{macrocode} END COMMENT
 \def\@checkworkwidth{6em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
@@ -913,6 +934,15 @@ Interactive
 
 \newenvironment{multipleChoice@}[1][]{}{)}
 
+%% %<*htXimera> COMMENTED BY SNAPP 8/1/2021
+%% \renewenvironment{multipleChoice}[1][]
+%% {\setkeys{multipleChoice}{#1}%
+%% \stepcounter{identification}\ifvmode \IgnorePar\fi \EndP\HCode{<div class="multiple-choice" }%
+%% \ifthenelse{\equal{\mc@id}{}}{}{\HCode{data-id="\mc@id" }}%
+%% \HCode{id="problem\arabic{identification}">}%
+%% }{\HCode{</div>}\IgnoreIndent}
+%% \ConfigureEnv{multipleChoice}{}{}{}{}
+%% %</htXimera> END COMMENT
 
 \newcommand{\wordChoice}[1]{%
 \let\choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
@@ -928,6 +958,12 @@ Interactive
 \let\choice\choicetemp% Now that choicetmp has been manipulated to what we want, replace choice with it.
 }%
 
+%% %    \begin{macrocode} COMMENTED BY SNAPP 8/1/2021
+%% %<*htXimera>
+%% \renewenvironment{multipleChoice@}{\refstepcounter{problem}}{}%
+%% \ConfigureEnv{multipleChoice@}{\stepcounter{identification}\IgnorePar\HCode{<span class="word-choice" id="word-choice\arabic{identification}">}}{\HCode{</span>}\IgnoreIndent}{}{}
+%% %</htXimera>
+%% %    \end{macrocode} END COMMENT
 
 \newenvironment{selectAll}[1][]
 {\begin{trivlist}
