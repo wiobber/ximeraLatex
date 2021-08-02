@@ -850,7 +850,6 @@ Interactive
     }
     {\item{#2}}
     % End then result
-    %{}% Begin/End else result.
     \fi% for web
 }
 %% %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
@@ -922,11 +921,13 @@ Interactive
         \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
 \begin{trivlist}
-                \ifweb\else\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
-\begin{enumerate}
+          \ifweb\item[]\hfil %% currently no text header for online
+          \else
+                \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
+          \begin{enumerate}
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-\end{enumerate}
+          \end{enumerate}
 \end{trivlist}
         \hfill\@checkwork % button for checking work
         \special{ximera:end multiplechoice}
@@ -966,10 +967,17 @@ Interactive
 %% %    \end{macrocode} END COMMENT
 
 \newenvironment{selectAll}[1][]
-{\begin{trivlist}
-    \ifweb\else\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
+    {\special{ximera:begin multiplechoice}
+       \begin{trivlist}
+       \ifweb
+       \item[]\hfil
+       \else
+       \item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
     \begin{enumerate}}
-    {\end{enumerate}\end{trivlist}}
+   {\end{enumerate}
+     \end{trivlist}
+     \hfill\@checkwork % button for checking work
+     \special{ximera:end selectall}}
 
 
 %% solution environment
