@@ -937,7 +937,7 @@ Interactive
 %% %    \end{macrocode} END COMMENT
 
 \newenvironment{selectAll}[1][]
-    {\special{ximera:begin multiplechoice}
+    {\special{ximera:begin selectall}
        \begin{trivlist}
        \ifweb
        \item[]\hfil
