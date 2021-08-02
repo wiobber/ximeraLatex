@@ -834,21 +834,22 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item{\special{ximera:rule multiplechoice correct}\@itemredact{#2}}
+    \item\@itemredact{#2}\special{ximera:rule multiplechoice correct}\setkeys{choice}{correct=false}
     }
     {
-    \item{\special{ximera:rule multiplechoice incorrect}\@itemredact{#2}}
+    \item\@itemredact{#2}\special{ximera:rule multiplechoice incorrect}
     }
 \else
-\item{#2}
 \ifthenelse{\boolean{\choice@correct}}
     {% Begin then result
-    \ifhandout% if it's a handout do nothing
-    \else% otherwise use a checkmark to indicate the correct choice to the author
-        \,\checkmark\,\setkeys{choice}{correct=false}
-    \fi% for handout
-    }% End then result
-    {}% Begin/End else result.
+      \ifhandout
+    \item{#2}% if it's a handout do nothing
+      \else% otherwise use a checkmark to indicate the correct choice to the author
+    \item{#2}\,\checkmark\,\setkeys{choice}{correct=false}
+      \fi% for handout
+    }
+    {\item{#2}}
+    % End then result
     \fi% for web
 }
 %% %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
@@ -893,7 +894,6 @@ Interactive
 {}% Start/End else result
 \hspace{-.25em}\ignorespaces%
 }
-
 \def\@checkworkwidth{6em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
@@ -901,18 +901,19 @@ Interactive
         \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
 \begin{trivlist}
-                \item[\hskip \labelsep\small\bfseries \ifweb\else Multiple Choice:\fi]\hfil
-\begin{enumerate}
+          \ifweb\item[]\hfil %% currently no text header for online
+          \else
+                \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
+          \begin{enumerate}
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-\end{enumerate}
+          \end{enumerate}
 \end{trivlist}
         \hfill\@checkwork % button for checking work
         \special{ximera:end multiplechoice}
 }
 
 \newenvironment{multipleChoice@}[1][]{}{)}
-
 
 \newcommand{\wordChoice}[1]{%
 \let\choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
@@ -928,12 +929,25 @@ Interactive
 \let\choice\choicetemp% Now that choicetmp has been manipulated to what we want, replace choice with it.
 }%
 
+%% %    \begin{macrocode} COMMENTED BY SNAPP 8/1/2021
+%% %<*htXimera>
+%% \renewenvironment{multipleChoice@}{\refstepcounter{problem}}{}%
+%% \ConfigureEnv{multipleChoice@}{\stepcounter{identification}\IgnorePar\HCode{<span class="word-choice" id="word-choice\arabic{identification}">}}{\HCode{</span>}\IgnoreIndent}{}{}
+%% %</htXimera>
+%% %    \end{macrocode} END COMMENT
 
 \newenvironment{selectAll}[1][]
-{\begin{trivlist}
-    \item[\hskip \labelsep\small\bfseries \ifweb\else Select All Correct Answers:\fi]\hfil
+    {\special{ximera:begin multiplechoice}
+       \begin{trivlist}
+       \ifweb
+       \item[]\hfil
+       \else
+       \item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
     \begin{enumerate}}
-    {\end{enumerate}\end{trivlist}}
+   {\end{enumerate}
+     \end{trivlist}
+     \hfill\@checkwork % button for checking work
+     \special{ximera:end selectall}}
 
 
 %% solution environment
