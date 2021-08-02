@@ -128,23 +128,6 @@
 
 %</classXimera>
 %    \end{macrocode}
-% On the HTML side, |\choice| emits |<span>|s.
-%    \begin{macrocode}
-%<*htXimera>
-\newcounter{choiceId}
-\renewcommand{\choice}[2][]{%
-\setkeys{choice}{correct=false}%
-\setkeys{choice}{#1}%
-\stepcounter{choiceId}\IgnorePar%
-\HCode{<span class="choice }%
-\ifthenelse{\boolean{\choice@correct}}{\HCode{correct}}{}
-\HCode{" }
-\ifthenelse{\equal{\choice@value}{}}{}{\HCode{data-value="\choice@value" }}
-\HCode{id="choice\arabic{choiceId}">}%
-#2\HCode{</span>}}
-\let\inlinechoice\choice
-%</htXimera>
-%    \end{macrocode}
 % \subsubsection{Checkwork}
 % The command |\@checkwork| helps make a button to validate environments that use choice
 %    \begin{macrocode}
@@ -162,7 +145,7 @@
         \special{ximera:begin multiplechoice}
 	\setkeys{multipleChoice}{#1}%
 	\begin{trivlist}
-                \ifweb\else\item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
+                \item[\hskip \labelsep\small\bfseries \ifweb\else Multiple Choice:\fi]\hfil
 		\begin{enumerate}
 	}% Note this means that \item has to be the first line after \begin{multipleChoice}.
 	{% Environment End Code
@@ -176,24 +159,6 @@
 %this is simply a wrapper for the sole showing (other)choice.
 \newenvironment{multipleChoice@}[1][]{}{)}
 %</classXimera>
-%    \end{macrocode}
-
-
-
-% On the web, you might also expect these to be "problem environments"
-% but they aren't -- they're respondables.  You might expect a
-% |\setcounter{choiceId}{0}| here --- that would be wrong, because then
-% the generated IDs would no longer be unique.
-%    \begin{macrocode}
-%<*htXimera>
-\renewenvironment{multipleChoice}[1][]
-{\setkeys{multipleChoice}{#1}%
-\stepcounter{identification}\ifvmode \IgnorePar\fi \EndP\HCode{<div class="multiple-choice" }%
-\ifthenelse{\equal{\mc@id}{}}{}{\HCode{data-id="\mc@id" }}%
-\HCode{id="problem\arabic{identification}">}%
-}{\HCode{</div>}\IgnoreIndent}
-\ConfigureEnv{multipleChoice}{}{}{}{}
-%</htXimera>
 %    \end{macrocode}
 
 % \subsection{Word choice}
@@ -235,7 +200,7 @@
 %<*classXimera>
 \newenvironment{selectAll}[1][]
 {\begin{trivlist}
-    \ifweb\else\item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
+    \item[\hskip \labelsep\small\bfseries \ifweb\else Select All Correct Answers:\fi]\hfil
     \begin{enumerate}}
     {\end{enumerate}\end{trivlist}}
 %</classXimera>
