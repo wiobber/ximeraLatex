@@ -829,6 +829,18 @@ Interactive
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
 \newcounter{ximeraWebChoiceEnumi}
+
+\newcommand{\@choicebox}[2]{%
+  \parbox{\linewidth}{
+    \renewcommand{\arraystretch}{2}
+    \begin{tabular}{rl}\hfil\\
+      \parbox{.05\linewidth-\tabcolsep}{\flushright\Large\bfseries\alph{#1})} &
+      \parbox{.9\linewidth-\tabcolsep}{\flushleft #2} \\\hfil
+  \end{tabular}}
+}%
+
+\def\@choiceBoxLineSqueeze{-1ex}
+
 \newcommand{\choice}[2][]{%
 \setkeys{choice}{correct=false}%
 \setkeys{choice}{#1}%% options are 'correct' or nothing
@@ -843,7 +855,7 @@ Interactive
       \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
       \special{ximera:rule:close multiplechoice}%
-      \setkeys{choice}{correct=false}\\[-.8ex]%
+      \setkeys{choice}{correct=false}\\[\@choiceBoxLineSqueeze]%
     }
     {
     \addtocounter{ximeraWebChoiceEnumi}{1}
@@ -924,10 +936,11 @@ Interactive
         \fi%
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-        \ifweb\end{center}\hfill\@checkwork % button for checking work
+        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\@checkwork % button for checking work
         \else
         \end{enumerate}
 \end{trivlist}
+        \fi
         \special{ximera:end multiplechoice}
 }
 
