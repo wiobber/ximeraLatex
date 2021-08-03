@@ -65,10 +65,24 @@
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice correct}\setkeys{choice}{correct=false}
+      \addtocounter{ximeraWebChoiceEnumi}{1}
+      \special{ximera:rule multiplechoice correct}
+      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+      \newlength\@mytmplen %% so we do it here
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
+      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
+      \setkeys{choice}{correct=false}\\[-.8ex]
     }
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice incorrect}
+    \addtocounter{ximeraWebChoiceEnumi}{1}
+      \special{ximera:rule multiplechoice incorrect}
+      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+      \newlength\@mytmplen %% so we do it here
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
+      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
+      \\[-.8ex]
     }
 \else
 \ifthenelse{\boolean{\choice@correct}}
@@ -144,16 +158,17 @@
         {% Environment Start Code
         \special{ximera:begin multiplechoice}
 	\setkeys{multipleChoice}{#1}%
-	\begin{trivlist}
-          \ifweb\item[]\hfil %% currently no text header for online
-          \else
-                \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
+        \ifweb\begin{center}\else
+        \begin{trivlist}
+        \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
           \begin{enumerate}
+        \fi%  
 	}% Note this means that \item has to be the first line after \begin{multipleChoice}.
 	{% Environment End Code
-          \end{enumerate}
+        \ifweb\end{center}\hfill\@checkwork % button for checking work
+        \else
+        \end{enumerate}
 	\end{trivlist}
-        \hfill\@checkwork % button for checking work
         \special{ximera:end multiplechoice}
 	}
 
