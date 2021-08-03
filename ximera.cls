@@ -828,16 +828,33 @@ Interactive
        {\totalheightof{\@itemboxup{#1}}} %% height of box, and the rule has been drawn
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
+\newcounter{ximeraWebChoiceEnumi}
 \newcommand{\choice}[2][]{%
 \setkeys{choice}{correct=false}%
 \setkeys{choice}{#1}%% options are 'correct' or nothing
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item\special{ximera:rule:open multiplechoice correct}\@itemredact{#2}\special{ximera:rule:close multiplechoice}\setkeys{choice}{correct=false}
+      \addtocounter{ximeraWebChoiceEnumi}{1}
+      \special{ximera:rule:open multiplechoice correct}
+      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+      \newlength\@mytmplen %% so we do it here
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
+      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
+      \special{ximera:rule:close multiplechoice}%
+      \setkeys{choice}{correct=false}\\[-.8ex]%
     }
     {
-    \item\special{ximera:rule:open multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule:close multiplechoice}
+    \addtocounter{ximeraWebChoiceEnumi}{1}
+      \special{ximera:rule:open multiplechoice incorrect}
+      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
+      \newlength\@mytmplen %% so we do it here
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
+      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
+      \special{ximera:rule:close multiplechoice}%
+      \\[-.8ex]
     }
 \else
 \ifthenelse{\boolean{\choice@correct}}
@@ -900,16 +917,17 @@ Interactive
         {% Environment Start Code
         \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
-\begin{trivlist}
-          \ifweb\item[]\hfil %% currently no text header for online
-          \else
-                \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil\fi
+        \ifweb\begin{center}\else
+        \begin{trivlist}
+        \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
           \begin{enumerate}
+        \fi%
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-          \end{enumerate}
+        \ifweb\end{center}\hfill\@checkwork % button for checking work
+        \else
+        \end{enumerate}
 \end{trivlist}
-        \hfill\@checkwork % button for checking work
         \special{ximera:end multiplechoice}
 }
 

@@ -59,13 +59,13 @@
        {\totalheightof{\@itemboxup{#1}}} %% height of box, and the rule has been drawn
        \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
 }
+\newcounter{ximeraWebChoiceEnumi}
 \newcommand{\choice}[2][]{%
 \setkeys{choice}{correct=false}%  
 \setkeys{choice}{#1}%% options are 'correct' or nothing
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-<<<<<<< HEAD
       \addtocounter{ximeraWebChoiceEnumi}{1}
       \special{ximera:rule:open multiplechoice correct}
       \let\@mytmplen\relax %% I need a temp length that can be negative for depth
