@@ -832,7 +832,7 @@ Interactive
 
 \newcommand{\@choicebox}[2]{%
   \parbox{\linewidth}{
-    \renewcommand{\arraystretch}{2}
+    \renewcommand{\arraystretch}{1.5}
     \begin{tabular}{rl}\hfil\\
       \parbox{.05\linewidth-\tabcolsep}{\flushright\Large\bfseries\alph{#1})} &
       \parbox{.9\linewidth-\tabcolsep}{\flushleft #2} \\\hfil
