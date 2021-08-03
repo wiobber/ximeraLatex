@@ -65,10 +65,10 @@
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice correct}\setkeys{choice}{correct=false}
+    \item\special{ximera:rule:open multiplechoice correct}\@itemredact{#2}\special{ximera:rule:close multiplechoice}\setkeys{choice}{correct=false}
     }
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice incorrect}
+    \item\special{ximera:rule:open multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule:close multiplechoice}
     }
 \else
 \ifthenelse{\boolean{\choice@correct}}
