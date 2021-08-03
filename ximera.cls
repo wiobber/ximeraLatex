@@ -1035,7 +1035,7 @@ Interactive
 
 \ifweb
 \newenvironment{freeResponse}[1][false]%
-{\special{ximera:rule free-response}
+{\special{ximera:rule freeresponse}
 
   \noindent\rule{\hsize}{1in}
 
