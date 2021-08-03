@@ -834,10 +834,10 @@ Interactive
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice correct}\setkeys{choice}{correct=false}
+    \item\special{ximera:rule:open multiplechoice correct}\@itemredact{#2}\special{ximera:rule:close multiplechoice}\setkeys{choice}{correct=false}
     }
     {
-    \item\@itemredact{#2}\special{ximera:rule multiplechoice incorrect}
+    \item\special{ximera:rule:open multiplechoice incorrect}\@itemredact{#2}\special{ximera:rule:close multiplechoice}
     }
 \else
 \ifthenelse{\boolean{\choice@correct}}
@@ -1186,27 +1186,7 @@ Interactive
 \DefineVerbatimEnvironment{sageOutput}{Verbatim}{numbers=left,frame=lines,label=SAGE-Output,labelposition=topline}
 
 
-\ifdefined\HCode
-  \else
-    \newwrite\myfile %% BADBAD -- \myfile is a bad name.
-    \immediate\openout\myfile=\jobname.jax
-\fi
-\ifdefined\HCode
-  \else
-    \immediate\write\myfile{\unexpanded{\newenvironment}{prompt}{}{}}
-\fi
-\ifdefined\HCode
-  \else
-\let\@oldargdef\@argdef
-\long\def\@argdef#1[#2]#3{%
-\immediate\write\myfile{\unexpanded{\newcommand}{\unexpanded{#1}}[\unexpanded{#2}]{\unexpanded{#3}}}%
-\@oldargdef#1[#2]{#3}%
-}
 
-\let\@OldDeclareMathOperator\DeclareMathOperator
-\renewcommand{\DeclareMathOperator}[2]{\@OldDeclareMathOperator{#1}{#2}\immediate\write\myfile{\unexpanded{\DeclareMathOperator}{\unexpanded{#1}}{\unexpanded{#2}}}}
-
-\fi
 \newenvironment{ungraded}{}{}
 \ifweb
 \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{\special{html <h2>}}[\special{html </h2>}]

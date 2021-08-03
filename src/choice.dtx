@@ -65,23 +65,26 @@
 \ifweb
 \ifthenelse{\boolean{\choice@correct}}
     {
+<<<<<<< HEAD
       \addtocounter{ximeraWebChoiceEnumi}{1}
-      \special{ximera:rule multiplechoice correct}
+      \special{ximera:rule:open multiplechoice correct}
       \let\@mytmplen\relax %% I need a temp length that can be negative for depth
       \newlength\@mytmplen %% so we do it here
       \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
       \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
-      \setkeys{choice}{correct=false}\\[-.8ex]
+      \special{ximera:rule:close multiplechoice}%
+      \setkeys{choice}{correct=false}\\[-.8ex]%
     }
     {
     \addtocounter{ximeraWebChoiceEnumi}{1}
-      \special{ximera:rule multiplechoice incorrect}
+      \special{ximera:rule:open multiplechoice incorrect}
       \let\@mytmplen\relax %% I need a temp length that can be negative for depth
       \newlength\@mytmplen %% so we do it here
       \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
       \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
+      \special{ximera:rule:close multiplechoice}%
       \\[-.8ex]
     }
 \else
