@@ -923,7 +923,7 @@ Interactive
 {}% Start/End else result
 \hspace{-.25em}\ignorespaces%
 }
-\def\@checkworkwidth{6em}
+\def\@checkworkwidth{12em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
@@ -936,7 +936,7 @@ Interactive
         \fi%
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\@checkwork % button for checking work
+        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\special{ximera:rule checkwork multiplechoice}\@checkwork % button for checking work
         \else
         \end{enumerate}
 \end{trivlist}
@@ -977,7 +977,7 @@ Interactive
     \begin{enumerate}}
    {\end{enumerate}
      \end{trivlist}
-     \hfill\@checkwork % button for checking work
+     \hfill\special{ximera:rule checkwork selectall}\@checkwork % button for checking work
      \special{ximera:end selectall}}
 
 
