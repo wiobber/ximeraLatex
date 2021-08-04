@@ -818,24 +818,14 @@ Interactive
 \setkeys{choice}{correct=false,value=}
 \setkeys{multipleChoice}{id=}
 \setkeys{otherchoice}{correct=false,value=}
-\newcommand{\@itemboxup}[1]{\parbox[t]{\linewidth-\labelsep-\labelwidth}{#1}}
-\newcommand{\@itemredact}[1]{
-  \let\@mytmplen\relax %% I need a temp length that can be negative for depth
-  \newlength\@mytmplen %% so we do it here
-  \setlength\@mytmplen{\depthof{\@itemboxup{#1}}} %% Getting depth of text
-  \rule[-\@mytmplen] %% this is where the \@mytmplen was needed -- I couldn't do "-\depthof"
-       {\linewidth-\labelsep-\labelwidth} %% textwidth in lists
-       {\totalheightof{\@itemboxup{#1}}} %% height of box, and the rule has been drawn
-       \hspace{-\linewidth+\labelsep+\labelwidth}\@itemboxup{#1} %% put the original text back
-}
 \newcounter{ximeraWebChoiceEnumi}
 
 \newcommand{\@choicebox}[2]{%
   \parbox{\linewidth}{
-    \renewcommand{\arraystretch}{1.5}
+    \renewcommand{\arraystretch}{1}
     \begin{tabular}{rl}\hfil\\
-      \parbox{.05\linewidth-\tabcolsep}{\flushright\Large\bfseries\alph{#1})} &
-      \parbox{.9\linewidth-\tabcolsep}{\flushleft #2} \\\hfil
+      \parbox{.05\linewidth}{\flushright\large\bfseries(\alph{#1})} &
+      \parbox{.9\linewidth-2\tabcolsep}{\flushleft #2} \\\hfil
   \end{tabular}}
 }%
 
@@ -848,24 +838,20 @@ Interactive
 \ifthenelse{\boolean{\choice@correct}}
     {
       \addtocounter{ximeraWebChoiceEnumi}{1}
-      \special{ximera:rule:open multiplechoice correct}
-      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
-      \newlength\@mytmplen %% so we do it here
-      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
-      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \let\@mytmplen\relax% %% I need a temp length that can be negative for depth
+      \newlength\@mytmplen% %% so we do it here
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
-      \special{ximera:rule:close multiplechoice}%
       \setkeys{choice}{correct=false}\\[\@choiceBoxLineSqueeze]%
     }
     {
-    \addtocounter{ximeraWebChoiceEnumi}{1}
-      \special{ximera:rule:open multiplechoice incorrect}
+      \addtocounter{ximeraWebChoiceEnumi}{1}
       \let\@mytmplen\relax %% I need a temp length that can be negative for depth
       \newlength\@mytmplen %% so we do it here
-      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}
-      \rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
+      \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
-      \special{ximera:rule:close multiplechoice}%
       \\[-.8ex]
     }
 \else
@@ -927,6 +913,8 @@ Interactive
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
+        \AtBeginEnvironment{choice}{\special{ximera:rule:open multiplechoice correct}}
+        \AtEndEnvironment{choice}{\special{ximera:rule:close multiplechoice correct}}
         \special{ximera:begin multiplechoice}
 \setkeys{multipleChoice}{#1}%
         \ifweb\begin{center}\else
@@ -968,17 +956,25 @@ Interactive
 %% %    \end{macrocode} END COMMENT
 
 \newenvironment{selectAll}[1][]
-    {\special{ximera:begin selectall}
-       \begin{trivlist}
-       \ifweb
-       \item[]\hfil
-       \else
-       \item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil\fi
-    \begin{enumerate}}
-   {\end{enumerate}
-     \end{trivlist}
-     \hfill\special{ximera:rule checkwork selectall}\@checkwork % button for checking work
-     \special{ximera:end selectall}}
+        {% Environment Start Code
+        \AtBeginEnvironment{choice}{\special{ximera:rule:open selectall correct}}
+        \AtEndEnvironment{choice}{\special{ximera:rule:close selectall correct}}
+        \special{ximera:begin selectall}
+\setkeys{selectAll}{#1}%
+        \ifweb\begin{center}\else
+        \begin{trivlist}
+        \item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil
+          \begin{enumerate}
+        \fi%
+}% Note this means that \item has to be the first line after \begin{selectAll}.
+{% Environment End Code
+        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\special{ximera:rule checkwork selectall}\@checkwork % button for checking work
+        \else
+        \end{enumerate}
+\end{trivlist}
+        \fi
+        \special{ximera:end selectall}
+}
 
 
 %% solution environment
