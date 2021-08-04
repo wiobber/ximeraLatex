@@ -831,30 +831,34 @@ Interactive
 
 \def\@choiceBoxLineSqueeze{-1ex}
 
-\newcommand{\choice}[2][]{%
+\ifweb %% raw choice for web
+\newcommand{\@rawchoice}[3]{% (correct) syle (multiplechoice or selectall) and words
+  \setkeys{choice}{correct=false}%
+  \setkeys{choice}{#1}%
+  \addtocounter{ximeraWebChoiceEnumi}{1}
+  \let\@mytmplen\relax% %% I need a temp length that can be negative for depth
+  \newlength\@mytmplen% %% so we do it here
+  \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#3}}}%
+  \ifthenelse{\boolean{\choice@correct}}
+     {%
+       \special{ximera:rule:open #2 correct}%
+       \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\@mytmplen}%
+       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#3}%
+       \special{ximera:rule:close #2 correct}%
+       \setkeys{choice}{correct=false}\\[\@choiceBoxLineSqueeze]%
+     }
+     {%
+       \special{ximera:rule:open #2 incorrect}%
+       \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\@mytmplen}%
+       \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#3}%
+       \special{ximera:rule:close #2 incorrect}%
+               \\[\@choiceBoxLineSqueeze]%
+     }%
+}
+\else\fi
+\newcommand{\choice}[2][]{% choice for PDF's
 \setkeys{choice}{correct=false}%
 \setkeys{choice}{#1}%% options are 'correct' or nothing
-\ifweb
-\ifthenelse{\boolean{\choice@correct}}
-    {
-      \addtocounter{ximeraWebChoiceEnumi}{1}
-      \let\@mytmplen\relax% %% I need a temp length that can be negative for depth
-      \newlength\@mytmplen% %% so we do it here
-      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
-      \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
-      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
-      \setkeys{choice}{correct=false}\\[\@choiceBoxLineSqueeze]%
-    }
-    {
-      \addtocounter{ximeraWebChoiceEnumi}{1}
-      \let\@mytmplen\relax %% I need a temp length that can be negative for depth
-      \newlength\@mytmplen %% so we do it here
-      \setlength\@mytmplen{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
-      \hspace{-\tabcolsep}\rule[-0.5\@mytmplen]{\linewidth}{\totalheightof{\@choicebox{ximeraWebChoiceEnumi}{#2}}}%
-      \hspace{-\linewidth}\@choicebox{ximeraWebChoiceEnumi}{#2}%
-      \\[-.8ex]
-    }
-\else
 \ifthenelse{\boolean{\choice@correct}}
     {% Begin then result
       \ifhandout
@@ -863,24 +867,8 @@ Interactive
     \item{#2}\,\checkmark\,\setkeys{choice}{correct=false}
       \fi% for handout
     }
-    {\item{#2}}
-    % End then result
-    \fi% for web
+    {\item{#2}} % End then result
 }
-%% %Define an expandable version of choice Not really meant to be used outside this package (used in wordChoice)
-%% % Is there a reason we can't just always use this as default? -- Jason
-%% \newcommand{\choiceEXP}[2][]{% COMMENTED OUT BY SNAPP JULY 26 2021
-%%  \expandafter\setkeys\expandafter{choice}{#1}%
-%%  \item{#2}
-%%  \ifthenelse{\boolean{\choice@correct}}
-%%  {% Begin then result
-%%  \ifhandout
-%%  \else
-%%  \,\checkmark\,\setkeys{choice}{correct=false}
-%%  \fi
-%%  }% End then result
-%%  {}% Begin/End else result.
-%%  } %% note all the {} are needed in case the choice has [] in it.% COMMENTED OUT BY SNAPP JULY 26 2021
 
 \newcommand{\otherchoice}[2][]{%
 \ignorespaces%
@@ -889,7 +877,6 @@ Interactive
 {% Start then result
 #2\ignorespaces\setkeys{otherchoice}{correct=false}\ignorespaces%
 }% End then result
-{}% Start/End else result
 \ignorespaces%
 }%
 
@@ -906,31 +893,31 @@ Interactive
 {% Start then result
 \ifhandout\else\checkmark\ignorespaces\setkeys{choice}{correct=false}\ignorespaces\fi%
 }% End then result
-{}% Start/End else result
 \hspace{-.25em}\ignorespaces%
 }
 \def\@checkworkwidth{12em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
         {% Environment Start Code
-        \AtBeginEnvironment{choice}{\special{ximera:rule:open multiplechoice correct}}
-        \AtEndEnvironment{choice}{\special{ximera:rule:close multiplechoice correct}}
+        \setkeys{multipleChoice}{#1}%
+        \ifweb
         \special{ximera:begin multiplechoice}
-\setkeys{multipleChoice}{#1}%
-        \ifweb\begin{center}\else
+        \renewcommand{\choice}[2][]{\@rawchoice{##1}{multiplechoice}{##2}}
+        \begin{center}\else
         \begin{trivlist}
         \item[\hskip \labelsep\small\bfseries Multiple Choice:]\hfil
           \begin{enumerate}
         \fi%
 }% Note this means that \item has to be the first line after \begin{multipleChoice}.
 {% Environment End Code
-        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\special{ximera:rule checkwork multiplechoice}\@checkwork % button for checking work
+        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0}\hfill\special{ximera:rule checkwork multiplechoice}\@checkwork % button for checking work
+        \special{ximera:end multiplechoice}
         \else
+        %\def\choice\@tempchoice
         \end{enumerate}
 \end{trivlist}
         \fi
-        \special{ximera:end multiplechoice}
-}
+        }
 
 \newenvironment{multipleChoice@}[1][]{}{)}
 
@@ -957,24 +944,25 @@ Interactive
 
 \newenvironment{selectAll}[1][]
         {% Environment Start Code
-        \AtBeginEnvironment{choice}{\special{ximera:rule:open selectall correct}}
-        \AtEndEnvironment{choice}{\special{ximera:rule:close selectall correct}}
+        \setkeys{selectAll}{#1}%
+        \ifweb
         \special{ximera:begin selectall}
-\setkeys{selectAll}{#1}%
-        \ifweb\begin{center}\else
+        \renewcommand{\choice}[2][]{\@rawchoice{##1}{selectall}{##2}}
+        \begin{center}\else
         \begin{trivlist}
         \item[\hskip \labelsep\small\bfseries Select All Correct Answers:]\hfil
           \begin{enumerate}
         \fi%
 }% Note this means that \item has to be the first line after \begin{selectAll}.
 {% Environment End Code
-        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0} \hfill\special{ximera:rule checkwork selectall}\@checkwork % button for checking work
+        \ifweb\end{center}\setcounter{ximeraWebChoiceEnumi}{0}\hfill\special{ximera:rule checkwork selectall}\@checkwork % button for checking work
+        \special{ximera:end selectall}
         \else
+        %\def\choice\@tempchoice
         \end{enumerate}
 \end{trivlist}
         \fi
-        \special{ximera:end selectall}
-}
+        }
 
 
 %% solution environment
