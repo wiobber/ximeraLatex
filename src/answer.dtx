@@ -30,10 +30,10 @@
 %    \begin{macrocode}
 \setkeys{answer}{id=,given=false}
 %    \end{macrocode}
-% Basic code for |\answer|.
+% Code for |\answer|. This code is rather delicate. We need to change the |catcode| so that |\specials| will work. Once we do this, both in-line and display-math will  work. However, environments provided by AMS-Math will not work, for reasons tis author does not understand; but, apparently |catcode| will not pass through these environments. Instead we place the argument in in-line math mode to find the width of the rule.   
 %    \begin{macrocode}
 \ifweb
-\def\answer{%% this is rather delicate, and probably could
+\def\answer{%% 
   \begingroup %% be better coded. 
   \catcode`^=12
   \catcode`_=12\relax

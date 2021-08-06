@@ -719,7 +719,7 @@ Interactive
 \define@key{answer}{format}{}
 \setkeys{answer}{id=,given=false}
 \ifweb
-\def\answer{%% this is rather delicate, and probably could
+\def\answer{%%
   \begingroup %% be better coded.
   \catcode`^=12
   \catcode`_=12\relax
