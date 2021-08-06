@@ -719,8 +719,8 @@ Interactive
 \define@key{answer}{format}{}
 \setkeys{answer}{id=,given=false}
 \ifweb
-\def\answer{%
-  \begingroup
+\def\answer{%% this is rather delicate, and probably could
+  \begingroup %% be better coded.
   \catcode`^=12
   \catcode`_=12\relax
   \answerbox
@@ -779,8 +779,8 @@ Interactive
   \renewcommand{\varrho}{\string\rho}
   \renewcommand{\varsigma}{\string\sigma}
   \renewcommand{\vartheta}{\string\theta}
-  \special{ximera:rule answer #2}
-  \rule[-0.75em]{\widthof{\hspace{5.5em}#2}}{2.5em} % Assumes that the height of the answer is the standard line height
+  \special{ximera:rule answer #2} %% below we use $#2$, without this AMS environments like gather fail.
+  \rule[-0.75em]{\widthof{\hspace{5.5em}$#2$}}{2.5em} % Assumes that the height of the answer is the standard line height
   \endgroup
 }
 \else
