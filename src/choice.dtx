@@ -116,7 +116,7 @@
 \newcommand{\inlinechoice}[2][]{%
 \setkeys{choice}{#1}%
 \iffirstinlinechoice
-(\hspace{-.25em}
+%(\hspace{-.25em}
 \firstinlinechoicefalse
 \else
 /
@@ -126,9 +126,9 @@
 {% Start then result
 \ifhandout\else\checkmark\ignorespaces\setkeys{choice}{correct=false}\ignorespaces\fi%
 }% End then result
-{
+{}%nothing to show as not correct
 \hspace{-.25em}\ignorespaces%
-}}
+}
 %</classXimera>
 %    \end{macrocode}
 % \subsubsection{Checkwork}
@@ -165,9 +165,9 @@
         \fi
         }
 
-%multipleChoice@ is for internal use only! (used in wordChoice)
-%this is simply a wrapper for the sole showing (other)choice.
-\newenvironment{multipleChoice@}[1][]{}{)}
+%%multipleChoice@ is for internal use only! (used in wordChoice)  REMOVE BADBAD
+%%this is simply a wrapper for the sole showing (other)choice. REMOVE BADBAD
+%%\newenvironment{multipleChoice@}[1][]{}{)} REMOVE BADBAD
 %</classXimera>
 %    \end{macrocode}
 
@@ -180,18 +180,14 @@
 \newcommand{\wordChoice}[1]{%
 \let\choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
 \ifwordchoicegiven% If wordchoice option is on, we need to juggle around some definitions.
-\let\choice\otherchoice%
-%\begin{multipleChoice@}% -unnecessary (REMOVE THIS LINE IF THE YEAR IS 2019 or Beyond)
+\let\choice\otherchoice% just prints the correct choice
 #1
-%\end{multipleChoice@}% -unnecessary (REMOVE THIS LINE IF THE YEAR IS 2019 or Beyond)
-\else% If it isn't the regular "choice" command should work.
+\else% If not given, we display all answers
 \let\choice\inlinechoice%
-\begin{multipleChoice@}%
-#1%
-\end{multipleChoice@}%
+(#1)% put the choices in parentheses
 \fi%
-\let\choice\choicetemp% Now that choicetmp has been manipulated to what we want, replace choice with it.
-}%
+\let\choice\choicetemp% Now that we are done with 
+}% our modified \choice, we return it to its orginal def
 
 
 %</classXimera>

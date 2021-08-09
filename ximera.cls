@@ -883,7 +883,6 @@ Interactive
 \newcommand{\inlinechoice}[2][]{%
 \setkeys{choice}{#1}%
 \iffirstinlinechoice
-(\hspace{-.25em}
 \firstinlinechoicefalse
 \else
 /
@@ -893,9 +892,9 @@ Interactive
 {% Start then result
 \ifhandout\else\checkmark\ignorespaces\setkeys{choice}{correct=false}\ignorespaces\fi%
 }% End then result
-{
+{}%nothing to show as not correct
 \hspace{-.25em}\ignorespaces%
-}}
+}
 \def\@checkworkwidth{12em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
@@ -920,21 +919,21 @@ Interactive
         \fi
         }
 
-\newenvironment{multipleChoice@}[1][]{}{)}
+%%multipleChoice@ is for internal use only! (used in wordChoice)  REMOVE BADBAD
+%%this is simply a wrapper for the sole showing (other)choice. REMOVE BADBAD
+%%\newenvironment{multipleChoice@}[1][]{}{)} REMOVE BADBAD
 
 \newcommand{\wordChoice}[1]{%
 \let\choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
 \ifwordchoicegiven% If wordchoice option is on, we need to juggle around some definitions.
-\let\choice\otherchoice%
+\let\choice\otherchoice% just prints the correct choice
 #1
-\else% If it isn't the regular "choice" command should work.
+\else% If not given, we display all answers
 \let\choice\inlinechoice%
-\begin{multipleChoice@}%
-#1%
-\end{multipleChoice@}%
+(#1)% put the choices in parentheses
 \fi%
-\let\choice\choicetemp% Now that choicetmp has been manipulated to what we want, replace choice with it.
-}%
+\let\choice\choicetemp% Now that we are done with
+}% our modified \choice, we return it to its orginal def
 
 %% %    \begin{macrocode} COMMENTED BY SNAPP 8/1/2021
 %% %<*htXimera>
