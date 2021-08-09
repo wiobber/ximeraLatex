@@ -893,8 +893,9 @@ Interactive
 {% Start then result
 \ifhandout\else\checkmark\ignorespaces\setkeys{choice}{correct=false}\ignorespaces\fi%
 }% End then result
+{
 \hspace{-.25em}\ignorespaces%
-}
+}}
 \def\@checkworkwidth{12em}
 \newcommand{\@checkwork}{\rule[-0.75em]{\@checkworkwidth}{2.5em}}
 \newenvironment{multipleChoice}[1][]
