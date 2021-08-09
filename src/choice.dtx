@@ -116,7 +116,6 @@
 \newcommand{\inlinechoice}[2][]{%
 \setkeys{choice}{#1}%
 \iffirstinlinechoice
-%(\hspace{-.25em}
 \firstinlinechoicefalse
 \else
 /
@@ -177,16 +176,50 @@
 % unwanted spaces in ``given'' mode.}
 %    \begin{macrocode}
 %<*classXimera>
+\newcommand{\@wordChoiceStackup}[1]{% used for web
+\let\@maxWd\relax
+\newlength\@maxWd% with a new tmp length
+\setlength{\@maxWd}{0em}%
+\renewcommand{\choice}[2][]{%
+\setkeys{choice}{correct=false}%
+\setkeys{choice}{##1}%  
+\let\@choiceWd\relax% we'll get the length of the entrie
+\newlength\@choiceWd% with a new tmp length
+\settowidth{\@choiceWd}{\mbox{##2}}%
+\setlength{\@maxWd}{\maxof{\@maxWd}{\@choiceWd}}%
+\ifthenelse{\boolean{\choice@correct}}
+{% correct
+\special{ximera:rule:open wordchoice correct}%
+##2\hspace{-\@choiceWd}%
+\special{ximera:rule:close wordchoice correct}%
+}%
+{% incorrect
+\special{ximera:rule:open wordchoice incorrect}%
+##2\hspace{-\@choiceWd}%
+\special{ximera:rule:close wordchoice incorrect}%
+}% 
+}% end of redefintion of choice
+\mbox{#1~\hspace{\@maxWd}}}
+
 \newcommand{\wordChoice}[1]{%
-\let\choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
+\let\@choicetemp\choice% Assign a "choicetemp" command to duplicate choice.
+\ifweb%
+\special{ximera:begin wordchoice}%
+\let\@maxWd\relax% we'll get the length of the entrie
+\newlength\@maxWd% with a new tmp length
+\setlength{\@maxWd}{\widthof{\@wordChoiceStackup{#1}}}%
+\rule[-0.75em]{\@maxWd}{2.5em}\hspace{-\@maxWd}\@wordChoiceStackup{#1}%
+\special{ximera:end wordchoice}%
+\else
 \ifwordchoicegiven% If wordchoice option is on, we need to juggle around some definitions.
 \let\choice\otherchoice% just prints the correct choice
 #1
 \else% If not given, we display all answers
 \let\choice\inlinechoice%
-(#1)% put the choices in parentheses
-\fi%
-\let\choice\choicetemp% Now that we are done with 
+(#1)\ignorespaces
+\fi%for \ifwordchoicegiven
+\fi%for \ifweb
+\let\choice\@choicetemp% Now that we are done with 
 }% our modified \choice, we return it to its orginal def
 
 
