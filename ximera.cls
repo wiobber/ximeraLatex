@@ -725,63 +725,65 @@ Interactive
   \catcode`_=12\relax
   \answerbox
 }
-\newcommand{\answerbox}[2][]{%
-  \renewcommand{\sqrt}[1]{\string \sqrt\{##1\}}
-  \renewcommand{\frac}[2]{((##1)/(##2))}
-  \renewcommand{\log}{\string\log}
-  \renewcommand{\ln}{\string\ln}
-  \renewcommand{\sin}{\string\sin}
-  \renewcommand{\cos}{\string\cos}
-  \renewcommand{\tan}{\string\tan}
-  \renewcommand{\arcsin}{\string\arcsin}
-  \renewcommand{\arccos}{\string\arccos}
-  \renewcommand{\arctan}{\string\arctan}
-  \renewcommand{\infty}{\string\infty}
-  \renewcommand{\Gamma}{\string\Gamma}
-  \renewcommand{\Delta}{\string\Delta}
-  \renewcommand{\Lambda}{\string\Lambda}
-  \renewcommand{\Phi}{\string\Phi}
-  \renewcommand{\Pi}{\string\Pi}
-  \renewcommand{\Psi}{\string\Psi}
-  \renewcommand{\Sigma}{\string\Sigma}
-  \renewcommand{\Theta}{\string\Theta}
-  \renewcommand{\Upsilon}{\string\Upsilon}
-  \renewcommand{\Xi}{\string\Xi}
-  \renewcommand{\Omega}{\string\Omega}
-  \renewcommand{\alpha}{\string\alpha}
-  \renewcommand{\beta}{\string\beta}
-  \renewcommand{\gamma}{\string\gamma}
-  \renewcommand{\delta}{\string\delta}
-  \renewcommand{\epsilon}{\string\epsilon}
-  \renewcommand{\zeta}{\string\zeta}
-  \renewcommand{\eta}{\string\eta}
-  \renewcommand{\theta}{\string\theta}
-  \renewcommand{\iota}{\string\iota}
-  \renewcommand{\kappa}{\string\kappa}
-  \renewcommand{\lambda}{\string\lambda}
-  \renewcommand{\mu}{\string\mu}
-  \renewcommand{\nu}{\string\nu}
-  \renewcommand{\xi}{\string\xi}
-  \renewcommand{\pi}{\string\pi}
-  \renewcommand{\rho}{\string\rho}
-  \renewcommand{\sigma}{\string\sigma}
-  \renewcommand{\tau}{\string\tau}
-  \renewcommand{\upsilon}{\string\upsilon}
-  \renewcommand{\phi}{\string\phi}
-  \renewcommand{\chi}{\string\chi}
-  \renewcommand{\psi}{\string\psi}
-  \renewcommand{\omega}{\string\omega}
-  \renewcommand{\digamma}{\string\digamma}
-  \renewcommand{\varepsilon}{\string\epsilon}
-  \renewcommand{\varkappa}{\string\kappa}
-  \renewcommand{\varphi}{\string\phi}
-  \renewcommand{\varpi}{\string\pi}
-  \renewcommand{\varrho}{\string\rho}
-  \renewcommand{\varsigma}{\string\sigma}
-  \renewcommand{\vartheta}{\string\theta}
-  \special{ximera:rule answer #2} %% below we use $#2$, without this AMS environments like gather fail.
-  \rule[-0.75em]{\widthof{\hspace{5.5em}$#2$}}{2.5em} % Assumes that the height of the answer is the standard line height
-  \endgroup
+\newcommand{\answerbox}[2][]{% We require this because we must change
+\renewcommand{\sqrt}[1]{\string \sqrt\{##1\}} %% the catcodes
+\renewcommand{\frac}[2]{((##1)/(##2))}%% before the command
+\renewcommand{\log}{\string\log}%% these renewcommads could
+\renewcommand{\ln}{\string\ln}%% in theory go above the new command
+\renewcommand{\sin}{\string\sin}%
+\renewcommand{\cos}{\string\cos}%
+\renewcommand{\tan}{\string\tan}%
+\renewcommand{\arcsin}{\string\arcsin}%
+\renewcommand{\arccos}{\string\arccos}%
+\renewcommand{\arctan}{\string\arctan}%
+\renewcommand{\infty}{\string\infty}%
+\renewcommand{\Gamma}{\string\Gamma}%
+\renewcommand{\Delta}{\string\Delta}%
+\renewcommand{\Lambda}{\string\Lambda}%
+\renewcommand{\Phi}{\string\Phi}%
+\renewcommand{\Pi}{\string\Pi}%
+\renewcommand{\Psi}{\string\Psi}%
+\renewcommand{\Sigma}{\string\Sigma}%
+\renewcommand{\Theta}{\string\Theta}%
+\renewcommand{\Upsilon}{\string\Upsilon}%
+\renewcommand{\Xi}{\string\Xi}%
+\renewcommand{\Omega}{\string\Omega}%
+\renewcommand{\alpha}{\string\alpha}%
+\renewcommand{\beta}{\string\beta}%
+\renewcommand{\gamma}{\string\gamma}%
+\renewcommand{\delta}{\string\delta}%
+\renewcommand{\epsilon}{\string\epsilon}%
+\renewcommand{\zeta}{\string\zeta}%
+\renewcommand{\eta}{\string\eta}%
+\renewcommand{\theta}{\string\theta}%
+\renewcommand{\iota}{\string\iota}%
+\renewcommand{\kappa}{\string\kappa}%
+\renewcommand{\lambda}{\string\lambda}%
+\renewcommand{\mu}{\string\mu}%
+\renewcommand{\nu}{\string\nu}%
+\renewcommand{\xi}{\string\xi}%
+\renewcommand{\pi}{\string\pi}%
+\renewcommand{\rho}{\string\rho}%
+\renewcommand{\sigma}{\string\sigma}%
+\renewcommand{\tau}{\string\tau}%
+\renewcommand{\upsilon}{\string\upsilon}%
+\renewcommand{\phi}{\string\phi}%
+\renewcommand{\chi}{\string\chi}%
+\renewcommand{\psi}{\string\psi}%
+\renewcommand{\omega}{\string\omega}%
+\renewcommand{\digamma}{\string\digamma}%
+\renewcommand{\varepsilon}{\string\epsilon}%
+\renewcommand{\varkappa}{\string\kappa}%
+\renewcommand{\varphi}{\string\phi}%
+\renewcommand{\varpi}{\string\pi}%
+\renewcommand{\varrho}{\string\rho}%
+\renewcommand{\varsigma}{\string\sigma}%
+\renewcommand{\vartheta}{\string\theta}%
+\special{ximera:rule answer #2}%% below we use $#2$, without this AMS environments like gather fail.
+\setlength{\fboxrule}{0pt}%% When in arrays, answer needs more vertical padding
+\setlength{\fboxsep}{7pt}%% So we put it in an \fbox
+\fbox{\rule[-0.75em]{\widthof{\hspace{5.5em}$#2$}}{2.5em}}%% Assumes that the height of the answer is the standard line height
+\endgroup
 }
 \else
 \newcommand{\answer}[2][]{%
