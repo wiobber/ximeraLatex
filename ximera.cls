@@ -618,6 +618,7 @@
   \vskip .6em\noindent\textit\theabstract\setcounter{problem}{0}\setcounter{section}{0}\setcounter{subsection}{0}\par\vspace{2em}
   %%% Design Question:
   % Would it make more sense to have author/outcomes in the header and reserve footer for footnotes?
+  % The above question is surely for the PDF. As of 8/21, I think it is an idea worth exploring
   % Or some other method to distinguish between the two now that footnotes are viable?
   \ifoutcomes%                                          If we have learning outcomes, we should display them.
       \bgroup
